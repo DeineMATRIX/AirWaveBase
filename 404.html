@@ -2,19 +2,14 @@
 <html>
 <head>
     <script>
-        // Der Name deines Repos, wie er bei GitHub steht:
-        var repoName = "AirWaveBase"; 
-        
-        var currentPath = window.location.pathname;
-        // Wir prüfen, ob "airwavebase" (egal wie geschrieben) in der URL vorkommt
-        if (currentPath.toLowerCase().includes(repoName.toLowerCase())) {
-            // Wir erzwingen die korrekte Schreibweise und leiten weiter
-            var newPath = currentPath.replace(new RegExp(repoName, "i"), repoName);
-            window.location.replace(window.location.origin + newPath);
+        var path = window.location.pathname;
+        var lowerCasePath = path.toLowerCase();
+        if (path !== lowerCasePath) {
+            window.location.replace(window.location.origin + lowerCasePath);
         }
     </script>
 </head>
 <body>
-    <p>Redirect to the mobile view...</p>
+    <p>Site loading...</p>
 </body>
 </html>
