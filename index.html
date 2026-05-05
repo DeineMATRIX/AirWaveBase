@@ -60,9 +60,9 @@
         #main-wrapper {
             width: fit-content;
             max-width: 100%;
-            margin: 20px auto;
+            margin: 30px auto;
             background-color: var(--bg-frame);
-            padding: 15px;
+            padding: 20px;                    /* symmetrischer Innenabstand */
             border-radius: 2px;
             display: flex;
             gap: 15px;
@@ -82,11 +82,10 @@
         }
 
         #team-list { 
-            display: flex; 
-            flex-direction: column; 
+            display: flex; flex-direction: column; 
             max-height: 336px;
             overflow-y: auto;
-            padding-bottom: 45px; /* Platz für den Button */
+            padding-bottom: 45px;
         }
 
         .member-btn { 
@@ -107,9 +106,7 @@
 
         #scroll-top-btn {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             display: none;
             padding: 8px;
             background: #1a1a1e;
@@ -118,16 +115,32 @@
             text-align: center;
             cursor: pointer;
             border-top: 1px solid #333;
-            z-index: 10;
         }
 
-        .column-right { width: 640px; display: flex; flex-direction: column; gap: 15px; }
+        .column-right { width: 640px; display: flex; flex-direction: column; gap: 12px; }
         #team-banner { width: 640px; height: 115px; background-size: cover; background-position: center; border-radius: 2px; background-color: #000; }
 
         .player-wrapper { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 2px; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; }
 
+        .about-btn {
+            background: var(--menu-bg);
+            color: var(--kick-green);
+            padding: 10px 15px;
+            border-radius: 2px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .about-btn:hover {
+            background: #2a2a2f;
+            color: var(--kick-green-hover);
+        }
+
         .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
+        .info-panel a { color: var(--kick-green); text-decoration: none; }
+        .info-panel a:hover { color: var(--kick-green-hover); text-decoration: underline; }
 
         /* ==================== MOBILE ==================== */
         @media (max-width: 950px) {
@@ -144,8 +157,8 @@
                 margin-bottom: 12px;
             }
             #mobile-logo {
-                width: 75px;                    /* quadratisch */
-                height: 75px;                   /* gleiche Höhe wie Banner */
+                width: 75px;
+                height: 75px;
                 background-size: cover;
                 background-position: center;
                 border-radius: 2px;
@@ -164,7 +177,6 @@
             .column-right > #team-banner { display: none; }
 
             .column-left, .column-right { width: 100%; }
-
             #team-list { max-height: 340px; }
         }
     </style>
@@ -195,14 +207,14 @@
         <div class="column-right">
             <div id="team-banner"></div>
             <div class="player-wrapper">
-                <iframe id="main-player" 
-                        src="" 
-                        frameborder="0" 
-                        scrolling="no" 
-                        allow="autoplay"
-                        allowfullscreen="false">
-                </iframe>
+                <iframe id="main-player" src="" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen="false"></iframe>
             </div>
+            
+            <!-- Neuer About Button -->
+            <div id="about-btn" class="about-btn" onclick="openAboutPage()">
+                About <span id="current-member-name">TeamMember</span>
+            </div>
+
             <div class="info-panel">
                 <h2 id="team-name-display"></h2>
                 <p id="team-desc-container"></p>
@@ -211,25 +223,40 @@
     </div>
 
     <script>
+        let currentMember = "";
         const listContainer = document.getElementById('team-list');
-        const scrollBtn = document.getElementById('scroll-top-btn');
         const player = document.getElementById('main-player');
+        const aboutBtn = document.getElementById('about-btn');
+        const currentNameSpan = document.getElementById('current-member-name');
 
         function updateListHeight() {
             const isMobile = window.innerWidth <= 950;
             let maxH = 11 * 42;
-
-            if (isMobile) {
-                maxH = Math.min(maxH, window.innerHeight * 0.38);
-            }
+            if (isMobile) maxH = Math.min(maxH, window.innerHeight * 0.38);
             listContainer.style.maxHeight = `${Math.floor(maxH)}px`;
         }
 
+        function pausePlayer() {
+            const currentSrc = player.src;
+            player.src = "";
+            setTimeout(() => { player.src = currentSrc; }, 50); // kurzer Reset zum Pausieren
+        }
+
         function loadStream(name, element) {
-            player.src = `https://player.kick.cx/${name.trim()}?fullscreen=false&quality=false&muted=false&reload=false&pip=false`;
+            currentMember = name.trim();
+            currentNameSpan.textContent = currentMember;
+
+            player.src = `https://player.kick.cx/${currentMember}?fullscreen=false&quality=false&muted=false&reload=false&pip=false`;
             
             document.querySelectorAll('.member-btn').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
+        }
+
+        function openAboutPage() {
+            if (currentMember) {
+                pausePlayer();
+                window.open(`https://kick.com/${currentMember}/about`, '_blank');
+            }
         }
 
         function getRandomColor() {
@@ -258,7 +285,6 @@
         }
 
         function init() {
-            // Bilder
             document.getElementById('team-logo').style.backgroundImage = `url('${TEAM_LOGO_URL}')`;
             document.getElementById('team-banner').style.backgroundImage = `url('${TEAM_BANNER_URL}')`;
             document.getElementById('mobile-logo').style.backgroundImage = `url('${TEAM_LOGO_URL}')`;
@@ -270,9 +296,8 @@
             buildTeamList();
             updateListHeight();
 
-            // Scroll Button Logik
             listContainer.onscroll = () => {
-                scrollBtn.style.display = listContainer.scrollTop > 80 ? "block" : "none";
+                document.getElementById('scroll-top-btn').style.display = listContainer.scrollTop > 80 ? "block" : "none";
             };
 
             window.addEventListener('resize', updateListHeight);
