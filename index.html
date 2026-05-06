@@ -62,10 +62,10 @@
             max-width: 100%;
             margin: 30px auto;
             background-color: var(--bg-frame);
-            padding: 20px;                    /* symmetrischer Innenabstand */
+            padding: 20px;           /* Gleichmäßiger Rahmen */
             border-radius: 2px;
             display: flex;
-            gap: 15px;
+            gap: 20px;               /* Symmetrischer Abstand */
             box-shadow: 0 0 30px rgba(0,0,0,0.9);
         }
 
@@ -126,17 +126,14 @@
         .about-btn {
             background: var(--menu-bg);
             color: var(--kick-green);
-            padding: 10px 15px;
+            padding: 11px 15px;
             border-radius: 2px;
             text-align: center;
             font-weight: 600;
             cursor: pointer;
             transition: 0.2s;
         }
-        .about-btn:hover {
-            background: #2a2a2f;
-            color: var(--kick-green-hover);
-        }
+        .about-btn:hover { background: #2a2a2f; color: var(--kick-green-hover); }
 
         .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
         .info-panel a { color: var(--kick-green); text-decoration: none; }
@@ -148,7 +145,8 @@
                 flex-direction: column;
                 width: 95%;
                 margin: 15px auto;
-                padding: 12px;
+                padding: 15px;
+                gap: 12px;
             }
 
             .mobile-top {
@@ -210,7 +208,6 @@
                 <iframe id="main-player" src="" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen="false"></iframe>
             </div>
             
-            <!-- Neuer About Button -->
             <div id="about-btn" class="about-btn" onclick="openAboutPage()">
                 About <span id="current-member-name">TeamMember</span>
             </div>
@@ -226,7 +223,6 @@
         let currentMember = "";
         const listContainer = document.getElementById('team-list');
         const player = document.getElementById('main-player');
-        const aboutBtn = document.getElementById('about-btn');
         const currentNameSpan = document.getElementById('current-member-name');
 
         function updateListHeight() {
@@ -238,8 +234,10 @@
 
         function pausePlayer() {
             const currentSrc = player.src;
-            player.src = "";
-            setTimeout(() => { player.src = currentSrc; }, 50); // kurzer Reset zum Pausieren
+            if (currentSrc) {
+                player.src = "";
+                setTimeout(() => player.src = currentSrc, 80);
+            }
         }
 
         function loadStream(name, element) {
@@ -255,7 +253,9 @@
         function openAboutPage() {
             if (currentMember) {
                 pausePlayer();
-                window.open(`https://kick.com/${currentMember}/about`, '_blank');
+                // Bessere Mobile-Handhabung: Link im neuen Tab erzwingen
+                const url = `https://kick.com/${currentMember}/about`;
+                window.open(url, '_blank', 'noopener,noreferrer');
             }
         }
 
