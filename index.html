@@ -52,7 +52,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; border: none !important; outline: none !important;
 
         }
-       
+
+        :root {
+            --content-width: 900px; /* ggf. leicht erhöhen */
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg-page) url('hintergrund.jpg') center/cover fixed;
@@ -62,7 +66,7 @@
 
         #main-wrapper {
             
-            width: fit-content;
+            width: var(--content-width);   /* 🔥 feste Content-Breite */
             margin: 30px auto;
             background-color: var(--bg-frame);
             padding: 15px;           /* Gleichmäßiger Rahmen */
