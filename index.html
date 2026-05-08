@@ -58,6 +58,7 @@
 
 :root {
     --gap: 15px;
+    --content-width: 885px; /* 230 + 640 + 15 */
 }
 
 body {
@@ -67,20 +68,25 @@ body {
     user-select: none;
 }
 
-/* 🔥 GRID LAYOUT (FIXT DEIN PROBLEM KOMPLETT) */
+/* 🔥 OUTER WRAPPER = GRAUER RAHMEN (IMMER 15px) */
 #main-wrapper {
-    width: calc(230px + 640px + 15px + 30px);
-    margin: 30px auto;
+    width: 100%;
+    padding: var(--gap);
     background-color: var(--bg-frame);
-    padding: 15px;
-    border-radius: 2px;
-    display: flex;
-    gap: 15px;
     box-shadow: 0 0 30px rgba(0,0,0,0.9);
+}
+
+/* 🔥 INNER CONTENT (ZENTRIERT) */
+.inner-wrapper {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    display: flex;
+    gap: var(--gap);
 }
 
 /* LEFT COLUMN */
 .column-left { 
+    width: 230px;
     display: flex; 
     flex-direction: column; 
     gap: 20px; 
@@ -88,7 +94,7 @@ body {
 
 #team-logo { 
     width: 100%;
-    aspect-ratio: 1 / 1;
+    height: 230px;
     background-size: cover; 
     background-position: center; 
     border-radius: 2px; 
@@ -172,6 +178,7 @@ body {
 
 /* RIGHT COLUMN */
 .column-right { 
+    width: 640px;
     display: flex; 
     flex-direction: column; 
     gap: 12px; 
@@ -179,7 +186,7 @@ body {
 
 #team-banner { 
     width: 100%;
-    aspect-ratio: 640 / 115;
+    height: 115px;
     background-size: cover; 
     background-position: center; 
     border-radius: 2px; 
@@ -197,7 +204,6 @@ body {
 iframe { 
     width: 100%; 
     height: 100%; 
-    border: none; 
 }
 
 .about-btn {
@@ -232,45 +238,15 @@ iframe {
     text-decoration: underline; 
 }
 
-/* ==================== MOBILE ==================== */
-@media (max-width: 900px) {
-    #main-wrapper {
-        grid-template-columns: 1fr;
-        width: 95%;
-        margin: 15px auto;
+/* MOBILE */
+@media (max-width: 950px) {
+    .inner-wrapper {
+        flex-direction: column;
     }
 
-    .mobile-top {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 12px;
-    }
-
-    #mobile-logo {
-        width: 75px;
-        height: 75px;
-        background-size: cover;
-        background-position: center;
-        border-radius: 2px;
-        background-color: #000;
-    }
-
-    #mobile-banner {
-        flex: 1;
-        height: 75px;
-        background-size: cover;
-        background-position: center;
-        border-radius: 2px;
-        background-color: #000;
-    }
-
-    .column-left > #team-logo,
-    .column-right > #team-banner { 
-        display: none; 
-    }
-
-    #team-list { 
-        max-height: 340px; 
+    .column-left,
+    .column-right {
+        width: 100%;
     }
 }
     </style>
