@@ -70,7 +70,8 @@ body {
 
 /* 🔥 OUTER WRAPPER = GRAUER RAHMEN (IMMER 15px) */
 #main-wrapper {
-    width: 100%;
+    width: calc(var(--content-width) + (var(--gap) * 2)); /* 🔥 FIX */
+    margin: 0 auto;                                       /* 🔥 FIX */
     padding: var(--gap);
     background-color: var(--bg-frame);
     box-shadow: 0 0 30px rgba(0,0,0,0.9);
@@ -249,47 +250,6 @@ iframe {
         width: 100%;
     }
 }
-    </style>
-</head>
-<body oncontextmenu="return false;">
-
-    <div id="main-wrapper">
-        <!-- Mobile Top -->
-        <div class="mobile-top">
-            <div id="mobile-logo"></div>
-            <div id="mobile-banner"></div>
-        </div>
-
-        <div class="column-left">
-            <div id="team-logo"></div>
-            <aside>
-                <div class="section-title">
-                    <span>Team Members</span>
-                    <span id="member-count">0</span>
-                </div>
-                <div id="team-list-wrapper">
-                    <div id="team-list"></div>
-                    <button id="scroll-top-btn" onclick="scrollToTop()">Back to top</button>
-                </div>
-            </aside>
-        </div>
-
-        <div class="column-right">
-            <div id="team-banner"></div>
-            <div class="player-wrapper">
-                <iframe id="main-player" src="" frameborder="0" scrolling="no" allow="autoplay" allowfullscreen="false"></iframe>
-            </div>
-            
-            <div id="about-btn" class="about-btn" onclick="openAboutPage()">
-                About <span id="current-member-name">TeamMember</span>
-            </div>
-
-            <div class="info-panel">
-                <h2 id="team-name-display"></h2>
-                <p id="team-desc-container"></p>
-            </div>
-        </div>
-    </div>
 
     <script>
         let currentMember = "";
