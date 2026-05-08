@@ -52,11 +52,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; border: none !important; outline: none !important;
 
         }
-
-        :root {
-            --gap: 15px;
-            --content-width: 885px; /* 230 + 640 + 15 */
-}
        
         body {
             font-family: 'Inter', sans-serif;
@@ -67,8 +62,7 @@
 
         #main-wrapper {
             
-            width: calc(var(--content-width) + (var(--gap) * 2)); /* 🔥 FIX */
-            max-width: 100%;
+            width: fit-content;
             margin: 30px auto;
             background-color: var(--bg-frame);
             padding: 15px;           /* Gleichmäßiger Rahmen */
