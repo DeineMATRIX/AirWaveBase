@@ -237,44 +237,47 @@ iframe {
     text-decoration: underline; 
 }
 
-        /* ==================== MOBILE ==================== */
-        @media (max-width: 950px) {
-            #main-wrapper {
-                flex-direction: column;
-                width: 95%;
-                margin: 15px auto;
-                padding: 15px;
-                gap: 12px;
-            }
+/* ==================== MOBILE ==================== */
+@media (max-width: 900px) {
+    #main-wrapper {
+        grid-template-columns: 1fr;
+        width: 95%;
+        margin: 15px auto;
+    }
 
-            .mobile-top {
-                display: flex;
-                gap: 10px;
-                margin-bottom: 12px;
-            }
-            #mobile-logo {
-                width: 75px;
-                height: 75px;
-                background-size: cover;
-                background-position: center;
-                border-radius: 2px;
-                background-color: #000;
-            }
-            #mobile-banner {
-                flex: 1;
-                height: 75px;
-                background-size: cover;
-                background-position: center;
-                border-radius: 2px;
-                background-color: #000;
-            }
+    .mobile-top {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
 
-            .column-left > #team-logo,
-            .column-right > #team-banner { display: none; }
+    #mobile-logo {
+        width: 75px;
+        height: 75px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 2px;
+        background-color: #000;
+    }
 
-            .column-left, .column-right { width: 100%; }
-            #team-list { max-height: 340px; }
-        }
+    #mobile-banner {
+        flex: 1;
+        height: 75px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 2px;
+        background-color: #000;
+    }
+
+    .column-left > #team-logo,
+    .column-right > #team-banner { 
+        display: none; 
+    }
+
+    #team-list { 
+        max-height: 340px; 
+    }
+}
     </style>
 </head>
 <body oncontextmenu="return false;">
