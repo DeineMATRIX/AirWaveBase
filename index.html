@@ -69,19 +69,14 @@ body {
 
 /* 🔥 GRID LAYOUT (FIXT DEIN PROBLEM KOMPLETT) */
 #main-wrapper {
-    display: grid;
-    grid-template-columns: 230px minmax(0, 640px);
-    gap: var(--gap);
-
+    width: calc(230px + 640px + 15px + 30px);
     margin: 30px auto;
-    padding: var(--gap);
-
     background-color: var(--bg-frame);
+    padding: 15px;
     border-radius: 2px;
+    display: flex;
+    gap: 15px;
     box-shadow: 0 0 30px rgba(0,0,0,0.9);
-
-    width: fit-content;
-    max-width: 100%;
 }
 
 /* LEFT COLUMN */
