@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="referrer" content="no-referrer">
 <title>AirWaveBase</title>
 
 <script>
@@ -37,135 +36,89 @@ const TEAM_BANNER_URL = "banner.jpg";
 
 <style>
 :root {
---kick-green:#53fc18;
---kick-green-hover:#45d614;
---bg-page:#000000;
+--bg-page:#000;
 --bg-frame:#2b2b2e;
 --menu-bg:#1f1f23;
 --text-main:#efeff1;
 --text-muted:#adadb8;
---hover-bg:#3a3a3f;
+--kick-green:#53fc18;
 }
 
-* { margin:0; padding:0; box-sizing:border-box; border:none!important; outline:none!important; }
-
-:root { --content-width:915px; }
+* { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-font-family:'Inter',sans-serif;
+font-family:Arial, sans-serif;
 background:var(--bg-page) url('hintergrund.jpg') center/cover fixed;
 color:var(--text-main);
-user-select:none;
 }
 
+/* WRAPPER */
 #main-wrapper {
-width:var(--content-width);
+width:915px;
 margin:30px auto;
-background-color:var(--bg-frame);
+background:var(--bg-frame);
 padding:15px;
-border-radius:2px;
 display:flex;
 gap:15px;
-box-shadow:0 0 30px rgba(0,0,0,0.9);
+position:relative; /* 🔥 wichtig für absolute Position */
 }
 
-/* 🔥 DEIN FIX UNVERÄNDERT */
+/* LINKS */
 .column-left {
 width:230px;
-display:flex;
-flex-direction:column;
-gap:15px;
 margin-left:-15px;
 }
 
-/* 🔥 NEU: COPYRIGHT LINKS UNTEN */
+#team-logo {
+width:230px;
+height:230px;
+background-size:cover;
+background-position:center;
+}
+
+/* RECHTS */
+.column-right {
+flex:1;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+#team-banner {
+height:115px;
+background-size:cover;
+background-position:center;
+}
+
+.player-wrapper {
+aspect-ratio:16/9;
+background:#000;
+}
+
+iframe {
+width:100%;
+height:100%;
+border:none;
+}
+
+/* 🔥 COPYRIGHT UNTEN RECHTS */
 #copyright {
+position:absolute;
+bottom:5px;
+right:10px;
 font-size:11px;
 color:var(--text-muted);
 opacity:0.7;
-margin-top:auto;
-padding-left:5px;
-}
-
-#team-logo { width:230px;height:230px;background-size:cover;background-position:center;border-radius:2px;background-color:#000; }
-
-/* REST UNVERÄNDERT */
-.section-title { font-size:14px;font-weight:700;margin-bottom:10px;padding:0 5px;display:flex;justify-content:space-between; }
-
-#team-list-wrapper { position:relative;background:var(--menu-bg);border-radius:2px;overflow:hidden; }
-
-#team-list { display:flex;flex-direction:column;max-height:336px;overflow-y:auto;padding-bottom:45px; }
-
-.member-btn { display:flex;align-items:center;padding:6px 12px;background:transparent;color:var(--text-main);cursor:pointer;width:100%;text-align:left;font-size:15px;transition:0.1s;flex-shrink:0;height:42px; }
-
-.avatar-placeholder { width:24px;height:24px;border-radius:50%;margin-right:10px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;text-transform:uppercase; }
-
-.member-btn:hover { background-color:var(--hover-bg); }
-.member-btn.active { background-color:var(--kick-green)!important;color:#000!important;font-weight:700; }
-
-#scroll-top-btn { position:absolute;bottom:0;left:0;right:0;display:none;padding:8px;background:#1a1a1e;color:var(--text-main);font-size:11px;text-align:center;cursor:pointer;border-top:1px solid #333; }
-
-.column-right { width:640px;display:flex;flex-direction:column;gap:12px; }
-
-#team-banner { width:640px;height:115px;background-size:cover;background-position:center;border-radius:2px;background-color:#000; }
-
-.player-wrapper { width:100%;aspect-ratio:16/9;background:#000;border-radius:2px;overflow:hidden; }
-
-iframe { width:100%;height:100%;border:none; }
-
-.about-btn { background:var(--menu-bg);color:var(--kick-green);padding:11px 15px;border-radius:2px;text-align:center;font-weight:600;cursor:pointer;transition:0.2s; }
-
-.about-btn:hover { background:#2a2a2f;color:var(--kick-green-hover); }
-
-.info-panel { background:var(--menu-bg);padding:15px;border-radius:2px; }
-
-.info-panel a { color:var(--kick-green);text-decoration:none; }
-
-.info-panel a:hover { color:var(--kick-green-hover);text-decoration:underline; }
-
-/* MOBILE UNVERÄNDERT */
-@media (max-width:950px){
-#main-wrapper{flex-direction:column;width:95%;margin:15px auto;padding:15px;gap:12px;}
-.mobile-top{display:flex;gap:10px;margin-bottom:12px;}
-#mobile-logo{width:75px;height:75px;background-size:cover;background-position:center;border-radius:2px;background-color:#000;}
-#mobile-banner{flex:1;height:75px;background-size:cover;background-position:center;border-radius:2px;background-color:#000;}
-.column-left>#team-logo,.column-right>#team-banner{display:none;}
-.column-left,.column-right{width:100%;}
-.column-left{margin-left:0;}
-#team-list{max-height:340px;}
 }
 </style>
 </head>
 
-<body oncontextmenu="return false;">
+<body>
 
 <div id="main-wrapper">
 
-<div class="mobile-top">
-<div id="mobile-logo"></div>
-<div id="mobile-banner"></div>
-</div>
-
 <div class="column-left">
 <div id="team-logo"></div>
-
-<aside>
-<div class="section-title">
-<span>Team Members</span>
-<span id="member-count">0</span>
-</div>
-
-<div id="team-list-wrapper">
-<div id="team-list"></div>
-<button id="scroll-top-btn" onclick="scrollToTop()">Back to top</button>
-</div>
-</aside>
-
-<!-- 🔥 HIER IST DEIN COPYRIGHT -->
-<div id="copyright">
-© <span id="year"></span> Neo Matrix
-</div>
-
 </div>
 
 <div class="column-right">
@@ -175,92 +128,32 @@ iframe { width:100%;height:100%;border:none; }
 <iframe id="main-player"></iframe>
 </div>
 
-<div id="about-btn" class="about-btn" onclick="openAboutPage()">
-About <span id="current-member-name">TeamMember</span>
+<div style="color:#53fc18;text-align:center;cursor:pointer;">
+About TeamMember
 </div>
 
-<div class="info-panel">
+<div style="background:#1f1f23;padding:10px;">
 <h2 id="team-name-display"></h2>
 <p id="team-desc-container"></p>
 </div>
 </div>
 
+<!-- 🔥 HIER IST ES JETZT -->
+<div id="copyright">
+© <span id="year"></span> Neo Matrix
+</div>
+
 </div>
 
 <script>
-// 🔥 AUTO JAHR
 document.getElementById("year").textContent = new Date().getFullYear();
-
-/* DEIN REST SCRIPT UNVERÄNDERT */
-let currentMember="";
-const listContainer=document.getElementById('team-list');
-const player=document.getElementById('main-player');
-const currentNameSpan=document.getElementById('current-member-name');
-
-function updateListHeight(){
-const isMobile=window.innerWidth<=950;
-let maxH=11*42;
-if(isMobile) maxH=Math.min(maxH,window.innerHeight*0.38);
-listContainer.style.maxHeight=`${Math.floor(maxH)}px`;
-}
-
-function pausePlayer(){
-const currentSrc=player.src;
-if(currentSrc){
-player.src="";
-setTimeout(()=>player.src=currentSrc,80);
-}
-}
-
-function loadStream(name,element){
-currentMember=name.trim();
-currentNameSpan.textContent=currentMember;
-player.src=`https://player.kick.cx/${currentMember}?fullscreen=false&quality=false&muted=false&reload=false&pip=false`;
-document.querySelectorAll('.member-btn').forEach(el=>el.classList.remove('active'));
-element.classList.add('active');
-}
-
-function openAboutPage(){
-if(currentMember){
-pausePlayer();
-window.open(`https://kick.com/${currentMember}/about`,'_blank');
-}
-}
-
-function getRandomColor(){
-const colors=['#f44336','#9c27b0','#3f51b5','#00bcd4','#4caf50','#ffc107','#ff5722'];
-return colors[Math.floor(Math.random()*colors.length)];
-}
-
-function buildTeamList(){
-const shuffled=[...MITGLIEDER].sort(()=>Math.random()-0.5);
-listContainer.innerHTML='';
-shuffled.forEach((name,i)=>{
-const btn=document.createElement('button');
-btn.className='member-btn';
-const letter=name.trim().charAt(0).toUpperCase();
-const color=getRandomColor();
-btn.innerHTML=`<div class="avatar-placeholder" style="background:${color}">${letter}</div><span>${name.trim()}</span>`;
-btn.onclick=()=>loadStream(name,btn);
-listContainer.appendChild(btn);
-if(i===0) loadStream(name,btn);
-});
-document.getElementById('member-count').textContent=MITGLIEDER.length;
-}
 
 function init(){
 document.getElementById('team-logo').style.backgroundImage=`url('${TEAM_LOGO_URL}')`;
 document.getElementById('team-banner').style.backgroundImage=`url('${TEAM_BANNER_URL}')`;
-document.getElementById('mobile-logo').style.backgroundImage=`url('${TEAM_LOGO_URL}')`;
-document.getElementById('mobile-banner').style.backgroundImage=`url('${TEAM_BANNER_URL}')`;
 
 document.getElementById('team-name-display').textContent=TEAM_NAME;
-document.getElementById('team-desc-container').innerHTML=TEAM_BESCHREIBUNG;
-
-buildTeamList();
-updateListHeight();
-
-window.addEventListener('resize',updateListHeight);
+document.getElementById('team-desc-container').textContent=TEAM_BESCHREIBUNG;
 }
 
 window.onload=init;
