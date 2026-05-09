@@ -49,6 +49,7 @@
             --hover-bg: #3a3a3f;
         }
 
+
 * { margin: 0; padding: 0; box-sizing: border-box; border: none !important; outline: none !important; }
 
 :root {
@@ -79,8 +80,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 15px;
-
-    margin-left: -15px; /* ← sorgt dafür, dass links nur noch 15px Rand bleibt */
+    margin-left: -15px;
 }
 
 #team-logo {
@@ -223,15 +223,8 @@ iframe {
     text-decoration: underline;
 }
 
-<footer id="site-footer">
-    © <span id="year"></span> Neo Matrix
-</footer>
-
-<script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-</script>
-
-        #site-footer {
+/* 🔥 Footer Styling */
+#site-footer {
     width: var(--content-width);
     margin: 10px auto 20px auto;
     text-align: center;
@@ -239,6 +232,23 @@ iframe {
     font-size: 12px;
     opacity: 0.8;
 }
+</style>
+
+
+<!-- 🔥 DEIN CONTENT (bestehend) -->
+<div id="main-wrapper">
+    <!-- dein kompletter Inhalt bleibt unverändert -->
+</div>
+
+<!-- 🔥 NEU: FOOTER UNTEN -->
+<footer id="site-footer">
+    © <span id="year"></span> Neo Matrix
+</footer>
+
+<!-- 🔥 NEU: SCRIPT -->
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
         
 
         /* ==================== MOBILE ==================== */
