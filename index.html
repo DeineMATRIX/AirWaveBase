@@ -50,10 +50,17 @@
         }
 
 
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>AirWaveBase</title>
+
+
 * { margin: 0; padding: 0; box-sizing: border-box; border: none !important; outline: none !important; }
 
 :root {
-    --content-width: 915px; /* ggf. leicht erhöhen */
+    --content-width: 915px;
 }
 
 body {
@@ -73,7 +80,7 @@ body {
     gap: 15px;
     box-shadow: 0 0 30px rgba(0,0,0,0.9);
 }
-     
+
 /* 🔥 EINZIGER FIX */
 .column-left {
     width: 230px;
@@ -147,7 +154,7 @@ body {
 
 .member-btn:hover { background-color: var(--hover-bg); }
 .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
-        
+
 #scroll-top-btn {
     position: absolute;
     bottom: 0; left: 0; right: 0;
@@ -223,7 +230,7 @@ iframe {
     text-decoration: underline;
 }
 
-/* 🔥 Footer Styling */
+/* 🔥 Footer */
 #site-footer {
     width: var(--content-width);
     margin: 10px auto 20px auto;
@@ -232,70 +239,80 @@ iframe {
     font-size: 12px;
     opacity: 0.8;
 }
+
+/* ==================== MOBILE ==================== */
+@media (max-width: 950px) {
+
+    #main-wrapper {
+        flex-direction: column;
+        width: 95%;
+        margin: 15px auto;
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .mobile-top {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    #mobile-logo {
+        width: 75px;
+        height: 75px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 2px;
+        background-color: #000;
+    }
+
+    #mobile-banner {
+        flex: 1;
+        height: 75px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 2px;
+        background-color: #000;
+    }
+
+    .column-left > #team-logo,
+    .column-right > #team-banner {
+        display: none;
+    }
+
+    .column-left,
+    .column-right {
+        width: 100%;
+    }
+
+    /* 🔥 WICHTIG: kein Rand-Bug mehr */
+    .column-left {
+        margin-left: 0;
+    }
+
+    #team-list {
+        max-height: 340px;
+    }
+}
 </style>
+</head>
 
+<body oncontextmenu="return false;">
 
-<!-- 🔥 DEIN CONTENT (bestehend) -->
 <div id="main-wrapper">
-    <!-- dein kompletter Inhalt bleibt unverändert -->
+    <!-- DEIN BESTEHENDER CONTENT BLEIBT HIER -->
 </div>
 
-<!-- 🔥 NEU: FOOTER UNTEN -->
 <footer id="site-footer">
     © <span id="year"></span> Neo Matrix
 </footer>
 
-<!-- 🔥 NEU: SCRIPT -->
 <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
+document.getElementById("year").textContent = new Date().getFullYear();
 </script>
-        
 
-        /* ==================== MOBILE ==================== */
-        @media (max-width: 950px) {
-            #main-wrapper {
-                flex-direction: column;
-                width: 95%;
-                margin: 15px auto;
-                padding: 15px;
-                gap: 12px;
-            }
-
-            .mobile-top {
-                display: flex;
-                gap: 10px;
-                margin-bottom: 12px;
-            }
-            #mobile-logo {
-                width: 75px;
-                height: 75px;
-                background-size: cover;
-                background-position: center;
-                border-radius: 2px;
-                background-color: #000;
-            }
-            #mobile-banner {
-                flex: 1;
-                height: 75px;
-                background-size: cover;
-                background-position: center;
-                border-radius: 2px;
-                background-color: #000;
-            }
-
-            .column-left > #team-logo,
-            .column-right > #team-banner { display: none; }
-
-            .column-left, .column-right { width: 100%; }
-            
-            /* 🔥 HIER DIE ERGÄNZUNG */
-            .column-left { margin-left: 0; }
-            
-            #team-list { max-height: 340px; }
-        }
-    </style>
-</head>
-<body oncontextmenu="return false;">
+</body>
+</html>
 
     <div id="main-wrapper">
         <!-- Mobile Top -->
