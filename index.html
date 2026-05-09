@@ -72,14 +72,7 @@ body {
     gap: 15px;
     box-shadow: 0 0 30px rgba(0,0,0,0.9);
 }
-<footer id="site-footer">
-    © <span id="year"></span> Neo Matrix
-</footer>
-
-<script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-</script>
-        
+     
 /* 🔥 EINZIGER FIX */
 .column-left {
     width: 230px;
@@ -154,15 +147,6 @@ body {
 
 .member-btn:hover { background-color: var(--hover-bg); }
 .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
-
-#site-footer {
-    width: var(--content-width);
-    margin: 10px auto 20px auto;
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 12px;
-    opacity: 0.8;
-}
         
 #scroll-top-btn {
     position: absolute;
@@ -238,6 +222,24 @@ iframe {
     color: var(--kick-green-hover);
     text-decoration: underline;
 }
+
+<footer id="site-footer">
+    © <span id="year"></span> Neo Matrix
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+        #site-footer {
+    width: var(--content-width);
+    margin: 10px auto 20px auto;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+    opacity: 0.8;
+}
+        
 
         /* ==================== MOBILE ==================== */
         @media (max-width: 950px) {
