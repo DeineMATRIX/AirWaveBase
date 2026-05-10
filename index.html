@@ -19,7 +19,7 @@
             --text-muted: #adadb8;
             --hover-bg: #3a3a3f;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; border: none !important; outline: none !important; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -29,7 +29,7 @@
         }
 
         #main-wrapper {
-            width: 940px;
+            width: 955px;
             margin: 30px auto;
             background-color: var(--bg-frame);
             padding: 15px;
@@ -42,7 +42,7 @@
         }
 
         .column-left {
-            width: 255px;
+            width: 270px;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -67,7 +67,6 @@
             width: 100%;
             font-size: 15px;
             transition: 0.1s;
-            flex-shrink: 0;
             height: 42px;
         }
 
@@ -81,19 +80,19 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            margin-right: 10px;
+            margin-right: 12px;
             object-fit: cover;
             background: #222;
         }
 
         .viewer-count {
             color: #888;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 500;
-            min-width: 65px;
+            min-width: 70px;
             text-align: right;
         }
-        .viewer-count.live { color: var(--kick-green); }
+        .viewer-count.live { color: var(--kick-green); font-weight: 600; }
 
         .member-btn:hover { background-color: var(--hover-bg); }
         .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
@@ -194,25 +193,25 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    async function fetchViewerData(username) {
-        try {
-            const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(username)}`);
-            if (!res.ok) return { viewers: 0, isLive: false };
-            const data = await res.json();
-            const stream = data.data?.livestream;
-            return { viewers: stream?.viewer_count || 0, isLive: !!stream };
-        } catch (e) {
-            return { viewers: 0, isLive: false };
-        }
-    }
-
+    // Schnellere parallele Abfragen
     async function buildTeamList() {
-        let membersWithData = [];
-        
-        for (const name of TEAM_DATA.MITGLIEDER) {
-            const data = await fetchViewerData(name);
-            membersWithData.push({ name, ...data });
-        }
+        const promises = TEAM_DATA.MITGLIEDER.map(async (name) => {
+            try {
+                const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`);
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                const stream = data.data?.livestream;
+                return {
+                    name,
+                    viewers: stream?.viewer_count || 0,
+                    isLive: !!stream
+                };
+            } catch {
+                return { name, viewers: 0, isLive: false };
+            }
+        });
+
+        const membersWithData = await Promise.all(promises);
 
         // Sortierung
         membersWithData.sort((a, b) => {
@@ -225,24 +224,44 @@
         listContainer.innerHTML = '';
 
         membersWithData.forEach(item => {
-            const { name, viewers, isLive } = item;
             const btn = document.createElement('button');
             btn.className = 'member-btn';
 
-            const avatarHTML = `<img class="avatar" src="https://kick.com/api/v2/channels/${name.toLowerCase()}/profile_picture" onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<div class=\"avatar\" style=\"background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;\">${name[0]}</div>')">`;
+            const avatar = document.createElement('img');
+            avatar.className = 'avatar';
+            avatar.src = `https://kick.com/api/v2/channels/${item.name.toLowerCase()}/profile_picture`;
+            avatar.onerror = () => {
+                avatar.style.display = 'none';
+                const fallback = document.createElement('div');
+                fallback.className = 'avatar';
+                fallback.style.background = '#333';
+                fallback.style.color = 'white';
+                fallback.style.display = 'flex';
+                fallback.style.alignItems = 'center';
+                fallback.style.justifyContent = 'center';
+                fallback.style.fontSize = '13px';
+                fallback.textContent = item.name[0].toUpperCase();
+                btn.querySelector('.member-left').prepend(fallback);
+            };
 
-            btn.innerHTML = `
-                <div class="member-left">
-                    ${avatarHTML}
-                    <span>${name}</span>
-                </div>
-                ${viewers >= 1 ? `<span class="viewer-count ${isLive ? 'live' : ''}">${viewers.toLocaleString('de-DE')}</span>` : ''}
-            `;
+            const leftDiv = document.createElement('div');
+            leftDiv.className = 'member-left';
+            leftDiv.appendChild(avatar);
+            leftDiv.appendChild(document.createTextNode(item.name));
 
-            btn.onclick = () => loadStream(name, btn);
+            btn.appendChild(leftDiv);
+
+            if (item.viewers >= 1) {
+                const countSpan = document.createElement('span');
+                countSpan.className = `viewer-count ${item.isLive ? 'live' : ''}`;
+                countSpan.textContent = item.viewers.toLocaleString('de-DE');
+                btn.appendChild(countSpan);
+            }
+
+            btn.onclick = () => loadStream(item.name, btn);
             listContainer.appendChild(btn);
 
-            if (!currentMember) loadStream(name, btn);
+            if (!currentMember) loadStream(item.name, btn);
         });
 
         document.getElementById('member-count').textContent = TEAM_DATA.MITGLIEDER.length;
