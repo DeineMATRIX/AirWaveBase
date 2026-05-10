@@ -24,5 +24,8 @@ const TEAM_DATA = {
         "TeamMember_9",
         "djtotygee",
         "steffienova"
-    ]
+  ],
+
+    TEAM_LOGO_URL: "logo.png",
+    TEAM_BANNER_URL: "banner.jpg"
 };
