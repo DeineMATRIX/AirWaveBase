@@ -189,45 +189,47 @@
     document.getElementById("year").textContent = new Date().getFullYear();
 
     async function buildTeamList() {
-        listContainer.innerHTML = '';
+        listContainer.innerHTML = '<div style="padding:15px;color:#666;">Lade Team-Mitglieder...</div>';
 
-        const promises = TEAM_DATA.MITGLIEDER.map(async (name) => {
+        const membersWithData = [];
+
+        for (const name of TEAM_DATA.MITGLIEDER) {
             try {
                 const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`);
-                const data = await res.json();
+                const raw = await res.json();
+                const data = raw.data || raw;
 
-                const channel = data.data || {};
-                const user = channel.user || {};
-                const stream = channel.livestream;
+                const stream = data.livestream;
+                const user = data.user || {};
 
-                return {
+                membersWithData.push({
                     name: name,
                     avatar: user.profile_pic || user.avatar || null,
-                    viewers: stream?.viewer_count || 0,
+                    viewers: stream ? (stream.viewer_count || 0) : 0,
                     isLive: !!stream
-                };
+                });
             } catch (e) {
-                return { name: name, avatar: null, viewers: 0, isLive: false };
+                membersWithData.push({ name: name, avatar: null, viewers: 0, isLive: false });
             }
-        });
+        }
 
-        const members = await Promise.all(promises);
-
-        // Sortierung: Live-Streams zuerst, nach Zuschauern absteigend
-        members.sort((a, b) => {
+        // Sortierung
+        membersWithData.sort((a, b) => {
             if (a.isLive && b.isLive) return b.viewers - a.viewers;
             if (a.isLive) return -1;
             if (b.isLive) return 1;
             return 0;
         });
 
-        members.forEach(item => {
+        listContainer.innerHTML = '';
+
+        membersWithData.forEach(item => {
             const btn = document.createElement('button');
             btn.className = 'member-btn';
 
             const avatarHTML = item.avatar 
-                ? `<img class="avatar" src="${item.avatar}" onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<div class=\\'avatar\\' style=\\'background:#333;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;\\'>${item.name[0]}</div>')">`
-                : `<div class="avatar" style="background:#333;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;">${item.name[0]}</div>`;
+                ? `<img class="avatar" src="${item.avatar}" onerror="this.style.display='none';this.parentElement.insertAdjacentHTML('afterbegin','<div class=\\'avatar\\' style=\\'background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;\\'>${item.name[0]}</div>')">` 
+                : `<div class="avatar" style="background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;">${item.name[0]}</div>`;
 
             btn.innerHTML = `
                 <div class="member-left">
@@ -289,5 +291,6 @@
 
     window.onload = init;
 </script>
+
 </body>
 </html>
