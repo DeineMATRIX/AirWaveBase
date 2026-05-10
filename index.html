@@ -188,54 +188,41 @@
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    async function buildTeamList() {
-        const promises = TEAM_DATA.MITGLIEDER.map(name => 
-            fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`)
-                .then(r => r.json())
-                .then(data => {
-                    const stream = data.data?.livestream;
-                    return {
-                        name,
-                        avatar: data.data?.user?.profile_pic || null,
-                        viewers: stream?.viewer_count || 0,
-                        isLive: !!stream
-                    };
-                })
-                .catch(() => ({ name, avatar: null, viewers: 0, isLive: false }))
-        );
+async function buildTeamList() {
+    listContainer.innerHTML = '';
 
-        const members = await Promise.all(promises);
+    for (const name of TEAM_DATA.MITGLIEDER) {
+        try {
+            const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`);
+            const data = await res.json();
+            
+            console.log(name, data); // Zum Debuggen in der Konsole
 
-        members.sort((a, b) => {
-            if (a.isLive && b.isLive) return b.viewers - a.viewers;
-            if (a.isLive) return -1;
-            if (b.isLive) return 1;
-            return 0;
-        });
+            const stream = data.data?.livestream;
+            const avatar = data.data?.user?.profile_pic || data.data?.profile_pic || null;
+            const viewers = stream?.viewer_count || 0;
+            const isLive = !!stream;
 
-        listContainer.innerHTML = '';
-
-        members.forEach(item => {
             const btn = document.createElement('button');
             btn.className = 'member-btn';
-
+            
             btn.innerHTML = `
                 <div class="member-left">
-                    <img class="avatar" src="${item.avatar || ''}" 
-                         onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<div class=\\'avatar\\' style=\\'background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;\\'>${item.name[0]}</div>')">
-                    <span>${item.name}</span>
+                    ${avatar ? `<img class="avatar" src="${avatar}">` : `<div class="avatar" style="background:#333;color:white;display:flex;align-items:center;justify-content:center;">${name[0]}</div>`}
+                    <span>${name}</span>
                 </div>
-                ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">${item.viewers.toLocaleString('de-DE')}</span>` : ''}
+                ${viewers >= 1 ? `<span class="viewer-count ${isLive ? 'live' : ''}">${viewers.toLocaleString('de-DE')}</span>` : ''}
             `;
 
-            btn.onclick = () => loadStream(item.name, btn);
+            btn.onclick = () => loadStream(name, btn);
             listContainer.appendChild(btn);
 
-            if (!currentMember) loadStream(item.name, btn);
-        });
-
-        document.getElementById('member-count').textContent = TEAM_DATA.MITGLIEDER.length;
+            if (!currentMember) loadStream(name, btn);
+        } catch(e) {
+            console.error("Fehler bei", name, e);
+        }
     }
+}
 
     function loadStream(name, element) {
         currentMember = name.trim();
