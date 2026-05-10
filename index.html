@@ -1,42 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
     <title>AirWaveBase</title>
-   
-    <script>
-        const MITGLIEDER = [
-            "TeamMember_1",
-            "DeineMATRIX",
-            "TeamMember_2",
-            "TeamMember_3",
-            "holzi_music",
-            "Deejay_w",
-            "MarcoDeejayChannel",
-            "djp3itsch3",
-            "Sallyy_x",
-            "6hulksmash6",
-            "themysticmountainshow",
-            "drwolliakadrpfeffi",
-            "TeamMember_4",
-            "TeamMember_5",
-            "TeamMember_6",
-            "TeamMember_7",
-            "TeamMember_8",
-            "TeamMember_9",
-            "djtotygee",
-            "steffienova"
-
-];
-
-        const TEAM_NAME = "AirWaveBase";
-        const TEAM_BESCHREIBUNG = "The first KICK Team and KICK DJ Team site.<br><br>We’re a collective of DJs from all over the world who are passionate about music and community, and we’re thrilled to have you as part of it. We cover all genres of music.<br><br>Feel free to check out each of us and discover both familiar favorites and new finds that you’ll love.<br><br>Join us! Boost your visibility and network across genres. Add our team logo with a link to our team page at the top section of your KICK About. That's all it takes if your channel meets the requirements. <a href='https://discord.gg' target='_blank'>Discord</a>"; // ← deine volle Beschreibung hier
-        const TEAM_LOGO_URL = "logo.png";
-        const TEAM_BANNER_URL = "banner.jpg";
-    </script>
-
+  
+    <script src="team-data.js"></script>
+    
     <style>
         :root {
             --kick-green: #53fc18;
@@ -48,230 +19,122 @@
             --text-muted: #adadb8;
             --hover-bg: #3a3a3f;
         }
+        * { margin: 0; padding: 0; box-sizing: border-box; border: none !important; outline: none !important; }
 
-* { margin: 0; padding: 0; box-sizing: border-box; border: none !important; outline: none !important; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-page) url('hintergrund.jpg') center/cover fixed;
+            color: var(--text-main);
+            user-select: none;
+        }
 
-:root {
-    --content-width: 915px;
-}
+        #main-wrapper {
+            width: 915px;
+            margin: 30px auto;
+            background-color: var(--bg-frame);
+            padding: 15px;
+            padding-bottom: 28px;
+            border-radius: 2px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+        }
 
-body {
-    font-family: 'Inter', sans-serif;
-    background: var(--bg-page) url('hintergrund.jpg') center/cover fixed;
-    color: var(--text-main);
-    user-select: none;
-}
+        .column-left { width: 230px; display: flex; flex-direction: column; gap: 15px; }
+        #team-logo { width: 230px; height: 230px; background-size: cover; background-position: center; border-radius: 2px; background-color: #000; }
 
-/* 🔥 ERWEITERT (nur unten + positioning) */
-#main-wrapper {
-    width: var(--content-width);
-    margin: 30px auto;
-    background-color: var(--bg-frame);
-    padding: 15px;
-    padding-bottom: 28px; /* 35 NEU */
-    border-radius: 2px;
-    display: flex;
-    gap: 15px;
-    box-shadow: 0 0 30px rgba(0,0,0,0.9);
-    position: relative; /* NEU */
-}
-     
-.column-left {
-    width: 230px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-left: -15px;
-}
+        .section-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; padding: 0 5px; display: flex; justify-content: space-between; }
 
-#team-logo {
-    width: 230px;
-    height: 230px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 2px;
-    background-color: #000;
-}
+        #team-list-wrapper { position: relative; background: var(--menu-bg); border-radius: 2px; overflow: hidden; }
+        #team-list { display: flex; flex-direction: column; max-height: 336px; overflow-y: auto; padding-bottom: 45px; }
 
-.section-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    padding: 0 5px;
-    display: flex;
-    justify-content: space-between;
-}
+        .member-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 12px;
+            background: transparent;
+            color: var(--text-main);
+            cursor: pointer;
+            width: 100%;
+            font-size: 15px;
+            transition: 0.1s;
+            flex-shrink: 0;
+            height: 42px;
+        }
 
-#team-list-wrapper {
-    position: relative;
-    background: var(--menu-bg);
-    border-radius: 2px;
-    overflow: hidden;
-}
+        .member-info {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
 
-#team-list { 
-    display: flex;
-    flex-direction: column;
-    max-height: 336px;
-    overflow-y: auto;
-    padding-bottom: 45px;
-}
+        .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+            background: #000;
+        }
 
-.member-btn { 
-    display: flex;
-    align-items: center;
-    padding: 6px 12px;
-    background: transparent;
-    color: var(--text-main);
-    cursor: pointer;
-    width: 100%;
-    text-align: left;
-    font-size: 15px;
-    transition: 0.1s;
-    flex-shrink: 0;
-    height: 42px;
-}
+        .viewer-count {
+            color: #888;
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        .viewer-count.live { color: var(--kick-green); }
 
-.avatar-placeholder { 
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: 700;
-    color: white;
-    text-transform: uppercase;
-}
+        .member-btn:hover { background-color: var(--hover-bg); }
+        .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
 
-.member-btn:hover { background-color: var(--hover-bg); }
-.member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
-        
-#scroll-top-btn {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    display: none;
-    padding: 8px;
-    background: #1a1a1e;
-    color: var(--text-main);
-    font-size: 11px;
-    text-align: center;
-    cursor: pointer;
-    border-top: 1px solid #333;
-}
+        #scroll-top-btn {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            display: none;
+            padding: 8px;
+            background: #1a1a1e;
+            color: var(--text-main);
+            font-size: 11px;
+            text-align: center;
+            cursor: pointer;
+            border-top: 1px solid #333;
+        }
 
-.column-right {
-    width: 640px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
+        .column-right { width: 640px; display: flex; flex-direction: column; gap: 12px; }
+        #team-banner { width: 640px; height: 115px; background-size: cover; background-position: center; border-radius: 2px; background-color: #000; }
 
-#team-banner {
-    width: 640px;
-    height: 115px;
-    background-size: cover;
-    background-position: center;
-    border-radius: 2px;
-    background-color: #000;
-}
+        .player-wrapper { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 2px; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; }
 
-.player-wrapper {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    background: #000;
-    border-radius: 2px;
-    overflow: hidden;
-}
+        .about-btn {
+            background: var(--menu-bg);
+            color: var(--kick-green);
+            padding: 11px 15px;
+            border-radius: 2px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .about-btn:hover { background: #2a2a2f; color: var(--kick-green-hover); }
 
-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
+        .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
+        .info-panel a { color: var(--kick-green); }
 
-.about-btn {
-    background: var(--menu-bg);
-    color: var(--kick-green);
-    padding: 11px 15px;
-    border-radius: 2px;
-    text-align: center;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.about-btn:hover {
-    background: #2a2a2f;
-    color: var(--kick-green-hover);
-}
-
-.info-panel {
-    background: var(--menu-bg);
-    padding: 15px;
-    border-radius: 2px;
-}
-
-.info-panel a {
-    color: var(--kick-green);
-    text-decoration: none;
-}
-
-.info-panel a:hover {
-    color: var(--kick-green-hover);
-    text-decoration: underline;
-}
-
-/* 🔥 NEU */
-#copyright {
-    position: absolute;
-    bottom: 8px;
-    right: 12px;
-    font-size: 11px;
-    color: var(--text-muted);
-    opacity: 0.8;
-}
-
-@media (max-width: 950px) {
-    #main-wrapper {
-        flex-direction: column;
-        width: 95%;
-        margin: 15px auto;
-        padding: 15px;
-        gap: 12px;
-    }
-
-    .mobile-top { display: flex; gap: 10px; margin-bottom: 12px; }
-
-    #mobile-logo {
-        width: 75px; height: 75px;
-        background-size: cover; background-position: center;
-        border-radius: 2px; background-color: #000;
-    }
-
-    #mobile-banner {
-        flex: 1; height: 75px;
-        background-size: cover; background-position: center;
-        border-radius: 2px; background-color: #000;
-    }
-
-    .column-left > #team-logo,
-    .column-right > #team-banner { display: none; }
-
-    .column-left, .column-right { width: 100%; }
-    .column-left { margin-left: 0; }
-
-    #team-list { max-height: 340px; }
-}
+        @media (max-width: 950px) {
+            #main-wrapper { flex-direction: column; width: 95%; margin: 15px auto; padding: 15px; }
+            .mobile-top { display: flex; gap: 10px; margin-bottom: 12px; }
+            #mobile-logo, #mobile-banner { height: 75px; }
+            #mobile-logo { width: 75px; }
+            .column-left > #team-logo, .column-right > #team-banner { display: none; }
+            .column-left, .column-right { width: 100%; }
+        }
     </style>
 </head>
-
 <body oncontextmenu="return false;">
 
 <div id="main-wrapper">
-
     <div class="mobile-top">
         <div id="mobile-logo"></div>
         <div id="mobile-banner"></div>
@@ -286,7 +149,7 @@ iframe {
             </div>
             <div id="team-list-wrapper">
                 <div id="team-list"></div>
-                <button id="scroll-top-btn" onclick="scrollToTop()">Back to top</button>
+                <button id="scroll-top-btn" onclick="scrollToTop()">Nach oben</button>
             </div>
         </aside>
     </div>
@@ -306,109 +169,119 @@ iframe {
             <p id="team-desc-container"></p>
         </div>
     </div>
-
-    <!-- 🔥 NEU -->
-    <div id="copyright">
-        © <span id="year"></span> DeineMATRIX
-    </div>
-
 </div>
 
 <script>
-document.getElementById("year").textContent = new Date().getFullYear();
+    const WORKER_URL = "https://airwavebase-kick-api.neonator-4d6.workers.dev";
+    let currentMember = "";
 
-/* DEIN SCRIPT UNVERÄNDERT */
-let currentMember = "";
-const listContainer = document.getElementById('team-list');
-const player = document.getElementById('main-player');
-const currentNameSpan = document.getElementById('current-member-name');
+    const listContainer = document.getElementById('team-list');
+    const player = document.getElementById('main-player');
+    const currentNameSpan = document.getElementById('current-member-name');
 
-/* ... REST BLEIBT IDENTISCH ... */
-
-function updateListHeight() {
-    const isMobile = window.innerWidth <= 950;
-    let maxH = 11 * 42;
-    if (isMobile) maxH = Math.min(maxH, window.innerHeight * 0.38);
-    listContainer.style.maxHeight = `${Math.floor(maxH)}px`;
-}
-
-function pausePlayer() {
-    const currentSrc = player.src;
-    if (currentSrc) {
-        player.src = "";
-        setTimeout(() => player.src = currentSrc, 80);
+    async function fetchViewerData(username) {
+        try {
+            const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(username)}`);
+            if (!res.ok) return { viewers: 0, isLive: false };
+            const data = await res.json();
+            const stream = data.data?.livestream;
+            return {
+                viewers: stream?.viewer_count || 0,
+                isLive: !!stream
+            };
+        } catch (e) {
+            return { viewers: 0, isLive: false };
+        }
     }
-}
 
-function loadStream(name, element) {
-    currentMember = name.trim();
-    currentNameSpan.textContent = currentMember;
+    async function buildTeamList() {
+        let membersWithData = [];
 
-    player.src = `https://player.kick.cx/${currentMember}?fullscreen=false&quality=false&muted=false&reload=false&pip=false`;
-    
-    document.querySelectorAll('.member-btn').forEach(el => el.classList.remove('active'));
-    element.classList.add('active');
-}
+        // Sequentiell abfragen (server-schonend)
+        for (const name of TEAM_DATA.MITGLIEDER) {
+            const data = await fetchViewerData(name);
+            membersWithData.push({ name, ...data });
+        }
 
-function openAboutPage() {
-    if (currentMember) {
-        pausePlayer();
-        const url = `https://kick.com/${currentMember}/about`;
-        window.open(url, '_blank', 'noopener,noreferrer');
+        // Sortieren: Live mit meisten Zuschauern zuerst, dann Rest zufällig
+        membersWithData.sort((a, b) => {
+            if (a.isLive && b.isLive) return b.viewers - a.viewers;
+            if (a.isLive) return -1;
+            if (b.isLive) return 1;
+            return 0; // Offline bleiben in Abfrage-Reihenfolge
+        });
+
+        listContainer.innerHTML = '';
+
+        membersWithData.forEach(({ name, viewers, isLive }) => {
+            const btn = document.createElement('button');
+            btn.className = 'member-btn';
+            
+            const avatarUrl = `https://kick.com/api/v2/channels/${name.toLowerCase()}/profile_picture`; // Versuch echte Avatar
+
+            btn.innerHTML = `
+                <div class="member-info">
+                    <img class="avatar" src="${avatarUrl}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
+                    <div class="avatar-placeholder" style="display:none; width:28px;height:28px;border-radius:50%;background:#333;align-items:center;justify-content:center;font-size:12px;">${name[0].toUpperCase()}</div>
+                    <span>${name}</span>
+                </div>
+                <span class="viewer-count ${isLive ? 'live' : ''}">
+                    ${viewers > 0 ? viewers.toLocaleString('de-DE') : ''}
+                </span>
+            `;
+
+            btn.onclick = () => loadStream(name, btn);
+            listContainer.appendChild(btn);
+
+            if (!currentMember) loadStream(name, btn); // Erstes Mitglied starten
+        });
+
+        document.getElementById('member-count').textContent = TEAM_DATA.MITGLIEDER.length;
     }
-}
 
-function getRandomColor() {
-    const colors = ['#f44336', '#9c27b0', '#3f51b5', '#00bcd4', '#4caf50', '#ffc107', '#ff5722'];
-    return colors[Math.floor(Math.random() * colors.length)];
-}
+    function loadStream(name, element) {
+        currentMember = name.trim();
+        currentNameSpan.textContent = currentMember;
+        player.src = `https://player.kick.cx/${currentMember}?fullscreen=false&quality=false&muted=false&reload=false&pip=false`;
+        
+        document.querySelectorAll('.member-btn').forEach(el => el.classList.remove('active'));
+        element.classList.add('active');
+    }
 
-function buildTeamList() {
-    const shuffled = [...MITGLIEDER].sort(() => Math.random() - 0.5);
-    listContainer.innerHTML = '';
+    function openAboutPage() {
+        if (currentMember) {
+            const currentSrc = player.src;
+            player.src = "";
+            setTimeout(() => player.src = currentSrc, 100);
+            window.open(`https://kick.com/${currentMember}/about`, '_blank', 'noopener,noreferrer');
+        }
+    }
 
-    shuffled.forEach((name, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'member-btn';
-        const letter = name.trim().charAt(0).toUpperCase();
-        const color = getRandomColor();
+    function init() {
+        document.getElementById('team-logo').style.backgroundImage = `url('${TEAM_LOGO_URL || 'logo.png'}')`;
+        document.getElementById('team-banner').style.backgroundImage = `url('${TEAM_BANNER_URL || 'banner.jpg'}')`;
+        document.getElementById('mobile-logo').style.backgroundImage = `url('${TEAM_LOGO_URL || 'logo.png'}')`;
+        document.getElementById('mobile-banner').style.backgroundImage = `url('${TEAM_BANNER_URL || 'banner.jpg'}')`;
 
-        btn.innerHTML = `<div class="avatar-placeholder" style="background-color: ${color}">${letter}</div><span>${name.trim()}</span>`;
-        btn.onclick = () => loadStream(name, btn);
-        listContainer.appendChild(btn);
+        document.getElementById('team-name-display').textContent = TEAM_DATA.TEAM_NAME;
+        document.getElementById('team-desc-container').innerHTML = TEAM_DATA.TEAM_BESCHREIBUNG;
 
-        if (i === 0) loadStream(name, btn);
-    });
+        buildTeamList();
 
-    document.getElementById('member-count').textContent = MITGLIEDER.length;
-}
+        // Restliche Funktionen (Höhe, Scroll usw.)
+        window.addEventListener('resize', () => {
+            const isMobile = window.innerWidth <= 950;
+            let maxH = 11 * 42;
+            if (isMobile) maxH = Math.min(maxH, window.innerHeight * 0.38);
+            listContainer.style.maxHeight = `${Math.floor(maxH)}px`;
+        });
+    }
 
-function init() {
-    document.getElementById('team-logo').style.backgroundImage = `url('${TEAM_LOGO_URL}')`;
-    document.getElementById('team-banner').style.backgroundImage = `url('${TEAM_BANNER_URL}')`;
-    document.getElementById('mobile-logo').style.backgroundImage = `url('${TEAM_LOGO_URL}')`;
-    document.getElementById('mobile-banner').style.backgroundImage = `url('${TEAM_BANNER_URL}')`;
+    function scrollToTop() {
+        listContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-    document.getElementById('team-name-display').textContent = TEAM_NAME;
-    document.getElementById('team-desc-container').innerHTML = TEAM_BESCHREIBUNG;
-
-    buildTeamList();
-    updateListHeight();
-
-    listContainer.onscroll = () => {
-        document.getElementById('scroll-top-btn').style.display =
-            listContainer.scrollTop > 80 ? "block" : "none";
-    };
-
-    window.addEventListener('resize', updateListHeight);
-}
-
-function scrollToTop() {
-    listContainer.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-window.onload = init;
+    window.onload = init;
 </script>
-
 </body>
 </html>
