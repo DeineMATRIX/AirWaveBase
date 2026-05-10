@@ -40,8 +40,22 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.9);
         }
 
-        .column-left { width: 230px; display: flex; flex-direction: column; gap: 15px; }
-        #team-logo { width: 230px; height: 230px; background-size: cover; background-position: center; border-radius: 2px; background-color: #000; }
+        .column-left {
+            width: 230px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-left: -15px;           /* ← Wichtig für symmetrischen Rand */
+        }
+
+        #team-logo {
+            width: 230px;
+            height: 230px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 2px;
+            background-color: #000;
+        }
 
         .section-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; padding: 0 5px; display: flex; justify-content: space-between; }
 
@@ -63,19 +77,17 @@
             height: 42px;
         }
 
-        .member-info {
-            display: flex;
-            align-items: center;
-            flex: 1;
-        }
-
+        .member-info { display: flex; align-items: center; flex: 1; }
         .avatar {
             width: 28px;
             height: 28px;
             border-radius: 50%;
             margin-right: 10px;
             object-fit: cover;
-            background: #000;
+        }
+        .avatar-placeholder {
+            width: 28px; height: 28px; border-radius: 50%; margin-right: 10px;
+            background: #333; color: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold;
         }
 
         .viewer-count {
@@ -90,16 +102,10 @@
         .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
 
         #scroll-top-btn {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            display: none;
-            padding: 8px;
-            background: #1a1a1e;
-            color: var(--text-main);
-            font-size: 11px;
-            text-align: center;
-            cursor: pointer;
-            border-top: 1px solid #333;
+            position: absolute; bottom: 0; left: 0; right: 0;
+            display: none; padding: 8px; background: #1a1a1e;
+            color: var(--text-main); font-size: 11px; text-align: center;
+            cursor: pointer; border-top: 1px solid #333;
         }
 
         .column-right { width: 640px; display: flex; flex-direction: column; gap: 12px; }
@@ -117,7 +123,7 @@
             font-weight: 600;
             cursor: pointer;
         }
-        .about-btn:hover { background: #2a2a2f; color: var(--kick-green-hover); }
+        .about-btn:hover { background: #2a2a2f; }
 
         .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
         .info-panel a { color: var(--kick-green); }
@@ -125,10 +131,10 @@
         @media (max-width: 950px) {
             #main-wrapper { flex-direction: column; width: 95%; margin: 15px auto; padding: 15px; }
             .mobile-top { display: flex; gap: 10px; margin-bottom: 12px; }
-            #mobile-logo, #mobile-banner { height: 75px; }
-            #mobile-logo { width: 75px; }
+            #mobile-logo { width: 75px; height: 75px; background-size: cover; border-radius: 2px; }
+            #mobile-banner { flex: 1; height: 75px; background-size: cover; border-radius: 2px; }
             .column-left > #team-logo, .column-right > #team-banner { display: none; }
-            .column-left, .column-right { width: 100%; }
+            .column-left { margin-left: 0; }
         }
     </style>
 </head>
@@ -185,10 +191,7 @@
             if (!res.ok) return { viewers: 0, isLive: false };
             const data = await res.json();
             const stream = data.data?.livestream;
-            return {
-                viewers: stream?.viewer_count || 0,
-                isLive: !!stream
-            };
+            return { viewers: stream?.viewer_count || 0, isLive: !!stream };
         } catch (e) {
             return { viewers: 0, isLive: false };
         }
@@ -196,19 +199,17 @@
 
     async function buildTeamList() {
         let membersWithData = [];
-
-        // Sequentiell abfragen (server-schonend)
         for (const name of TEAM_DATA.MITGLIEDER) {
             const data = await fetchViewerData(name);
             membersWithData.push({ name, ...data });
         }
 
-        // Sortieren: Live mit meisten Zuschauern zuerst, dann Rest zufällig
+        // Sortierung: Live mit meisten Zuschauern zuerst
         membersWithData.sort((a, b) => {
             if (a.isLive && b.isLive) return b.viewers - a.viewers;
             if (a.isLive) return -1;
             if (b.isLive) return 1;
-            return 0; // Offline bleiben in Abfrage-Reihenfolge
+            return 0;
         });
 
         listContainer.innerHTML = '';
@@ -217,12 +218,11 @@
             const btn = document.createElement('button');
             btn.className = 'member-btn';
             
-            const avatarUrl = `https://kick.com/api/v2/channels/${name.toLowerCase()}/profile_picture`; // Versuch echte Avatar
-
             btn.innerHTML = `
                 <div class="member-info">
-                    <img class="avatar" src="${avatarUrl}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
-                    <div class="avatar-placeholder" style="display:none; width:28px;height:28px;border-radius:50%;background:#333;align-items:center;justify-content:center;font-size:12px;">${name[0].toUpperCase()}</div>
+                    <img class="avatar" src="https://kick.com/api/v2/channels/${name.toLowerCase()}/profile_picture" 
+                         onerror="this.style.display='none';this.parentElement.querySelector('.avatar-placeholder').style.display='flex'">
+                    <div class="avatar-placeholder">${name[0].toUpperCase()}</div>
                     <span>${name}</span>
                 </div>
                 <span class="viewer-count ${isLive ? 'live' : ''}">
@@ -233,7 +233,7 @@
             btn.onclick = () => loadStream(name, btn);
             listContainer.appendChild(btn);
 
-            if (!currentMember) loadStream(name, btn); // Erstes Mitglied starten
+            if (!currentMember) loadStream(name, btn);
         });
 
         document.getElementById('member-count').textContent = TEAM_DATA.MITGLIEDER.length;
@@ -258,23 +258,18 @@
     }
 
     function init() {
-        document.getElementById('team-logo').style.backgroundImage = `url('${TEAM_LOGO_URL || 'logo.png'}')`;
-        document.getElementById('team-banner').style.backgroundImage = `url('${TEAM_BANNER_URL || 'banner.jpg'}')`;
-        document.getElementById('mobile-logo').style.backgroundImage = `url('${TEAM_LOGO_URL || 'logo.png'}')`;
-        document.getElementById('mobile-banner').style.backgroundImage = `url('${TEAM_BANNER_URL || 'banner.jpg'}')`;
+        const logoUrl = TEAM_DATA.TEAM_LOGO_URL || "logo.png";
+        const bannerUrl = TEAM_DATA.TEAM_BANNER_URL || "banner.jpg";
+
+        document.getElementById('team-logo').style.backgroundImage = `url('${logoUrl}')`;
+        document.getElementById('team-banner').style.backgroundImage = `url('${bannerUrl}')`;
+        document.getElementById('mobile-logo').style.backgroundImage = `url('${logoUrl}')`;
+        document.getElementById('mobile-banner').style.backgroundImage = `url('${bannerUrl}')`;
 
         document.getElementById('team-name-display').textContent = TEAM_DATA.TEAM_NAME;
         document.getElementById('team-desc-container').innerHTML = TEAM_DATA.TEAM_BESCHREIBUNG;
 
         buildTeamList();
-
-        // Restliche Funktionen (Höhe, Scroll usw.)
-        window.addEventListener('resize', () => {
-            const isMobile = window.innerWidth <= 950;
-            let maxH = 11 * 42;
-            if (isMobile) maxH = Math.min(maxH, window.innerHeight * 0.38);
-            listContainer.style.maxHeight = `${Math.floor(maxH)}px`;
-        });
     }
 
     function scrollToTop() {
