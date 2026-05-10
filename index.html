@@ -49,7 +49,15 @@
             margin-left: -15px;
         }
 
-        #team-logo { width: 230px; height: 230px; background-size: cover; background-position: center; border-radius: 2px; background-color: #000; }
+        #team-logo { 
+            width: 230px; 
+            height: 230px; 
+            background-size: contain;     /* ← Keine Verzerrung */
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 2px;
+            background-color: #000;
+        }
 
         .section-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; padding: 0 5px; display: flex; justify-content: space-between; }
 
@@ -87,7 +95,8 @@
             min-width: 75px;
             text-align: right;
         }
-        .viewer-count.live { color: var(--kick-green); font-weight: 600; }
+        .viewer-count.live { color: var(--kick-green); }
+        .member-btn.active .viewer-count { color: #000 !important; } /* Schwarz bei Auswahl */
 
         .member-btn:hover { background-color: var(--hover-bg); }
         .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
@@ -131,7 +140,7 @@
         @media (max-width: 950px) {
             #main-wrapper { flex-direction: column; width: 95%; margin: 15px auto; padding: 15px; }
             .mobile-top { display: flex; gap: 10px; margin-bottom: 12px; }
-            #mobile-logo { width: 75px; height: 75px; background-size: cover; border-radius: 2px; }
+            #mobile-logo { width: 75px; height: 75px; background-size: contain; border-radius: 2px; }
             #mobile-banner { flex: 1; height: 75px; background-size: cover; border-radius: 2px; }
             .column-left > #team-logo, .column-right > #team-banner { display: none; }
             .column-left { margin-left: 0; width: 100%; }
@@ -189,41 +198,34 @@
     document.getElementById("year").textContent = new Date().getFullYear();
 
     async function buildTeamList() {
-        listContainer.innerHTML = '<div style="padding:15px;color:#666;">Lade Team-Mitglieder...</div>';
+        const promises = TEAM_DATA.MITGLIEDER.map(name => 
+            fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`)
+                .then(r => r.json())
+                .then(raw => {
+                    const data = raw.data || raw;
+                    const stream = data.livestream;
+                    const user = data.user || {};
+                    return {
+                        name,
+                        avatar: user.profile_pic || user.avatar,
+                        viewers: stream?.viewer_count || 0,
+                        isLive: !!stream
+                    };
+                })
+                .catch(() => ({ name, avatar: null, viewers: 0, isLive: false }))
+        );
 
-        const membersWithData = [];
+        const members = await Promise.all(promises);
 
-        for (const name of TEAM_DATA.MITGLIEDER) {
-            try {
-                const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`);
-                const raw = await res.json();
-                const data = raw.data || raw;
+        // Sortierung: Live oben, darunter zufällig
+        const live = members.filter(m => m.isLive).sort((a,b) => b.viewers - a.viewers);
+        const offline = members.filter(m => !m.isLive).sort(() => Math.random() - 0.5);
 
-                const stream = data.livestream;
-                const user = data.user || {};
-
-                membersWithData.push({
-                    name: name,
-                    avatar: user.profile_pic || user.avatar || null,
-                    viewers: stream ? (stream.viewer_count || 0) : 0,
-                    isLive: !!stream
-                });
-            } catch (e) {
-                membersWithData.push({ name: name, avatar: null, viewers: 0, isLive: false });
-            }
-        }
-
-        // Sortierung
-        membersWithData.sort((a, b) => {
-            if (a.isLive && b.isLive) return b.viewers - a.viewers;
-            if (a.isLive) return -1;
-            if (b.isLive) return 1;
-            return 0;
-        });
+        const sorted = [...live, ...offline];
 
         listContainer.innerHTML = '';
 
-        membersWithData.forEach(item => {
+        sorted.forEach(item => {
             const btn = document.createElement('button');
             btn.className = 'member-btn';
 
@@ -291,6 +293,5 @@
 
     window.onload = init;
 </script>
-
 </body>
 </html>
