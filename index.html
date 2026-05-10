@@ -38,6 +38,7 @@
             display: flex;
             gap: 15px;
             box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            position: relative;
         }
 
         .column-left {
@@ -91,7 +92,7 @@
             min-width: 70px;
             text-align: right;
         }
-        .viewer-count.live { color: var(--kick-green); }
+        .viewer-count.live { color: var(--kick-green); font-weight: 600; }
 
         .member-btn:hover { background-color: var(--hover-bg); }
         .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
@@ -193,19 +194,24 @@
     document.getElementById("year").textContent = new Date().getFullYear();
 
     async function buildTeamList() {
-        const promises = TEAM_DATA.MITGLIEDER.map(name => 
-            fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`)
-                .then(res => res.ok ? res.json() : {})
-                .then(data => {
-                    const stream = data.data?.livestream;
-                    return {
-                        name,
-                        viewers: stream?.viewer_count || 0,
-                        isLive: !!stream
-                    };
-                })
-                .catch(() => ({ name, viewers: 0, isLive: false }))
-        );
+        const promises = TEAM_DATA.MITGLIEDER.map(async (name) => {
+            try {
+                const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`);
+                const data = await res.json();
+                
+                const user = data.data?.user || data.data;
+                const stream = data.data?.livestream;
+                
+                return {
+                    name: name,
+                    avatar: user?.profile_pic || user?.avatar || null,
+                    viewers: stream?.viewer_count || 0,
+                    isLive: !!stream
+                };
+            } catch (e) {
+                return { name, avatar: null, viewers: 0, isLive: false };
+            }
+        });
 
         const membersWithData = await Promise.all(promises);
 
@@ -223,10 +229,13 @@
             const btn = document.createElement('button');
             btn.className = 'member-btn';
 
+            const avatarHTML = item.avatar 
+                ? `<img class="avatar" src="${item.avatar}" onerror="this.style.display='none';this.parentElement.innerHTML += '<div class=\\'avatar\\' style=\\'background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;\\'>${item.name[0]}</div>'">`
+                : `<div class="avatar" style="background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;">${item.name[0]}</div>`;
+
             btn.innerHTML = `
                 <div class="member-left">
-                    <img class="avatar" src="https://kick.com/api/v2/channels/${item.name.toLowerCase()}/profile_picture" 
-                         onerror="this.src='https://via.placeholder.com/28/333/ffffff?text=${item.name[0]}'">
+                    ${avatarHTML}
                     <span>${item.name}</span>
                 </div>
                 ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">${item.viewers.toLocaleString('de-DE')}</span>` : ''}
