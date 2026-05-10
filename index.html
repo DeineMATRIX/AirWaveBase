@@ -29,7 +29,7 @@
         }
 
         #main-wrapper {
-            width: 940px;                    /* etwas breiter für Zuschauerzahlen */
+            width: 940px;
             margin: 30px auto;
             background-color: var(--bg-frame);
             padding: 15px;
@@ -39,9 +39,9 @@
             gap: 15px;
             box-shadow: 0 0 30px rgba(0,0,0,0.9);
         }
-    
+
         .column-left {
-            width: 255px;                    /* etwas breiter */
+            width: 255px;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -70,26 +70,21 @@
             height: 42px;
         }
 
-        .member-info {
-            display: flex;
-            align-items: center;
-            flex: 1;
-        }
-
+        .member-info { display: flex; align-items: center; flex: 1; }
         .avatar {
             width: 28px;
             height: 28px;
             border-radius: 50%;
             margin-right: 10px;
             object-fit: cover;
-            background: #111;
+            background: #222;
         }
 
         .viewer-count {
             color: #888;
             font-size: 13.5px;
             font-weight: 500;
-            min-width: 55px;
+            min-width: 60px;
             text-align: right;
         }
         .viewer-count.live { color: var(--kick-green); }
@@ -98,16 +93,10 @@
         .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
 
         #scroll-top-btn {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            display: none;
-            padding: 8px;
-            background: #1a1a1e;
-            color: var(--text-main);
-            font-size: 11px;
-            text-align: center;
-            cursor: pointer;
-            border-top: 1px solid #333;
+            position: absolute; bottom: 0; left: 0; right: 0;
+            display: none; padding: 8px; background: #1a1a1e;
+            color: var(--text-main); font-size: 11px; text-align: center;
+            cursor: pointer; border-top: 1px solid #333;
         }
 
         .column-right { width: 640px; display: flex; flex-direction: column; gap: 12px; }
@@ -124,19 +113,26 @@
             text-align: center;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.2s;
         }
         .about-btn:hover { background: #2a2a2f; color: var(--kick-green-hover); }
 
         .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
-        .info-panel a { color: var(--kick-green); text-decoration: none; }
-        .info-panel a:hover { color: var(--kick-green-hover); text-decoration: underline; }
+        .info-panel a { color: var(--kick-green); }
+
+        #copyright {
+            position: absolute;
+            bottom: 8px;
+            right: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            opacity: 0.8;
+        }
 
         @media (max-width: 950px) {
             #main-wrapper { flex-direction: column; width: 95%; margin: 15px auto; padding: 15px; }
             .mobile-top { display: flex; gap: 10px; margin-bottom: 12px; }
-            #mobile-logo { width: 75px; height: 75px; background-size: cover; border-radius: 2px; background-color: #000; }
-            #mobile-banner { flex: 1; height: 75px; background-size: cover; border-radius: 2px; background-color: #000; }
+            #mobile-logo { width: 75px; height: 75px; background-size: cover; border-radius: 2px; }
+            #mobile-banner { flex: 1; height: 75px; background-size: cover; border-radius: 2px; }
             .column-left > #team-logo, .column-right > #team-banner { display: none; }
             .column-left { margin-left: 0; width: 100%; }
         }
@@ -178,6 +174,8 @@
             <p id="team-desc-container"></p>
         </div>
     </div>
+
+    <div id="copyright">© <span id="year"></span> DeineMATRIX</div>
 </div>
 
 <script>
@@ -188,16 +186,15 @@
     const player = document.getElementById('main-player');
     const currentNameSpan = document.getElementById('current-member-name');
 
+    document.getElementById("year").textContent = new Date().getFullYear();
+
     async function fetchViewerData(username) {
         try {
             const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(username)}`);
             if (!res.ok) return { viewers: 0, isLive: false };
             const data = await res.json();
             const stream = data.data?.livestream;
-            return { 
-                viewers: stream?.viewer_count || 0, 
-                isLive: !!stream 
-            };
+            return { viewers: stream?.viewer_count || 0, isLive: !!stream };
         } catch (e) {
             return { viewers: 0, isLive: false };
         }
@@ -211,7 +208,6 @@
             membersWithData.push({ name, ...data });
         }
 
-        // Sortierung: Live mit meisten Zuschauern zuerst, Rest wie bisher
         membersWithData.sort((a, b) => {
             if (a.isLive && b.isLive) return b.viewers - a.viewers;
             if (a.isLive) return -1;
@@ -228,7 +224,7 @@
             btn.innerHTML = `
                 <div class="member-info">
                     <img class="avatar" src="https://kick.com/api/v2/channels/${name.toLowerCase()}/profile_picture" 
-                         onerror="this.src='https://via.placeholder.com/28/333/fff?text=${name[0]}'">
+                         onerror="this.style.display='none'; this.parentElement.innerHTML += '<div class=\"avatar-placeholder\">${name[0]}</div>';">
                     <span>${name}</span>
                 </div>
                 ${viewers >= 1 ? `<span class="viewer-count ${isLive ? 'live' : ''}">${viewers.toLocaleString('de-DE')}</span>` : ''}
@@ -262,10 +258,13 @@
     }
 
     function init() {
-        document.getElementById('team-logo').style.backgroundImage = `url('${TEAM_DATA.TEAM_LOGO_URL}')`;
-        document.getElementById('team-banner').style.backgroundImage = `url('${TEAM_DATA.TEAM_BANNER_URL}')`;
-        document.getElementById('mobile-logo').style.backgroundImage = `url('${TEAM_DATA.TEAM_LOGO_URL}')`;
-        document.getElementById('mobile-banner').style.backgroundImage = `url('${TEAM_DATA.TEAM_BANNER_URL}')`;
+        const logoUrl = TEAM_DATA.TEAM_LOGO_URL || "logo.png";
+        const bannerUrl = TEAM_DATA.TEAM_BANNER_URL || "banner.jpg";
+
+        document.getElementById('team-logo').style.backgroundImage = `url('${logoUrl}')`;
+        document.getElementById('team-banner').style.backgroundImage = `url('${bannerUrl}')`;
+        document.getElementById('mobile-logo').style.backgroundImage = `url('${logoUrl}')`;
+        document.getElementById('mobile-banner').style.backgroundImage = `url('${bannerUrl}')`;
 
         document.getElementById('team-name-display').textContent = TEAM_DATA.TEAM_NAME;
         document.getElementById('team-desc-container').innerHTML = TEAM_DATA.TEAM_BESCHREIBUNG;
