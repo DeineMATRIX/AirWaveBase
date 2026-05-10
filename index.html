@@ -38,6 +38,7 @@
             display: flex;
             gap: 15px;
             box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            position: relative;
         }
 
         .column-left {
@@ -70,7 +71,12 @@
             height: 42px;
         }
 
-        .member-info { display: flex; align-items: center; flex: 1; }
+        .member-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
         .avatar {
             width: 28px;
             height: 28px;
@@ -84,7 +90,7 @@
             color: #888;
             font-size: 13.5px;
             font-weight: 500;
-            min-width: 60px;
+            min-width: 65px;
             text-align: right;
         }
         .viewer-count.live { color: var(--kick-green); }
@@ -208,6 +214,7 @@
             membersWithData.push({ name, ...data });
         }
 
+        // Sortierung
         membersWithData.sort((a, b) => {
             if (a.isLive && b.isLive) return b.viewers - a.viewers;
             if (a.isLive) return -1;
@@ -217,14 +224,16 @@
 
         listContainer.innerHTML = '';
 
-        membersWithData.forEach(({ name, viewers, isLive }) => {
+        membersWithData.forEach(item => {
+            const { name, viewers, isLive } = item;
             const btn = document.createElement('button');
             btn.className = 'member-btn';
-            
+
+            const avatarHTML = `<img class="avatar" src="https://kick.com/api/v2/channels/${name.toLowerCase()}/profile_picture" onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<div class=\"avatar\" style=\"background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;\">${name[0]}</div>')">`;
+
             btn.innerHTML = `
-                <div class="member-info">
-                    <img class="avatar" src="https://kick.com/api/v2/channels/${name.toLowerCase()}/profile_picture" 
-                         onerror="this.style.display='none'; this.parentElement.innerHTML += '<div class=\"avatar-placeholder\">${name[0]}</div>';">
+                <div class="member-left">
+                    ${avatarHTML}
                     <span>${name}</span>
                 </div>
                 ${viewers >= 1 ? `<span class="viewer-count ${isLive ? 'live' : ''}">${viewers.toLocaleString('de-DE')}</span>` : ''}
