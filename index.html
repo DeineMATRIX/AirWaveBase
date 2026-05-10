@@ -67,15 +67,10 @@
             width: 100%;
             font-size: 15px;
             transition: 0.1s;
-            flex-shrink: 0;
             height: 42px;
         }
 
-        .member-left {
-            display: flex;
-            align-items: center;
-            flex: 1;
-        }
+        .member-left { display: flex; align-items: center; flex: 1; }
 
         .avatar {
             width: 28px;
@@ -89,7 +84,7 @@
         .viewer-count {
             color: #888;
             font-size: 14px;
-            min-width: 70px;
+            min-width: 75px;
             text-align: right;
         }
         .viewer-count.live { color: var(--kick-green); font-weight: 600; }
@@ -194,29 +189,24 @@
     document.getElementById("year").textContent = new Date().getFullYear();
 
     async function buildTeamList() {
-        const promises = TEAM_DATA.MITGLIEDER.map(async (name) => {
-            try {
-                const res = await fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`);
-                const data = await res.json();
-                
-                const user = data.data?.user || data.data;
-                const stream = data.data?.livestream;
-                
-                return {
-                    name: name,
-                    avatar: user?.profile_pic || user?.avatar || null,
-                    viewers: stream?.viewer_count || 0,
-                    isLive: !!stream
-                };
-            } catch (e) {
-                return { name, avatar: null, viewers: 0, isLive: false };
-            }
-        });
+        const promises = TEAM_DATA.MITGLIEDER.map(name => 
+            fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`)
+                .then(r => r.json())
+                .then(data => {
+                    const stream = data.data?.livestream;
+                    return {
+                        name,
+                        avatar: data.data?.user?.profile_pic || null,
+                        viewers: stream?.viewer_count || 0,
+                        isLive: !!stream
+                    };
+                })
+                .catch(() => ({ name, avatar: null, viewers: 0, isLive: false }))
+        );
 
-        const membersWithData = await Promise.all(promises);
+        const members = await Promise.all(promises);
 
-        // Sortierung
-        membersWithData.sort((a, b) => {
+        members.sort((a, b) => {
             if (a.isLive && b.isLive) return b.viewers - a.viewers;
             if (a.isLive) return -1;
             if (b.isLive) return 1;
@@ -225,17 +215,14 @@
 
         listContainer.innerHTML = '';
 
-        membersWithData.forEach(item => {
+        members.forEach(item => {
             const btn = document.createElement('button');
             btn.className = 'member-btn';
 
-            const avatarHTML = item.avatar 
-                ? `<img class="avatar" src="${item.avatar}" onerror="this.style.display='none';this.parentElement.innerHTML += '<div class=\\'avatar\\' style=\\'background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;\\'>${item.name[0]}</div>'">`
-                : `<div class="avatar" style="background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;">${item.name[0]}</div>`;
-
             btn.innerHTML = `
                 <div class="member-left">
-                    ${avatarHTML}
+                    <img class="avatar" src="${item.avatar || ''}" 
+                         onerror="this.style.display='none'; this.parentElement.insertAdjacentHTML('afterbegin', '<div class=\\'avatar\\' style=\\'background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;\\'>${item.name[0]}</div>')">
                     <span>${item.name}</span>
                 </div>
                 ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">${item.viewers.toLocaleString('de-DE')}</span>` : ''}
