@@ -101,17 +101,17 @@
             background: #222;
         }
 
+        /* WICHTIG: Normale Textfarbe + hohe Priorität */
         .viewer-count {
-            color: var(--text-main);           /* Normale Textfarbe */
+            color: var(--text-main) !important;
             font-size: 14px;
             min-width: 80px;
             text-align: right;
         }
-        .viewer-count.live { color: var(--kick-green); }
-
-        /* Wichtig: Bei aktivem Eintrag alles schwarz */
-        .member-btn.active .viewer-count,
-        .member-btn.active .viewer-count.live {
+        .viewer-count.live {
+            color: var(--kick-green) !important;
+        }
+        .member-btn.active .viewer-count {
             color: #000 !important;
         }
 
