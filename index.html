@@ -108,8 +108,17 @@
             text-align: right;
         }
 
+        .viewer-count.live::before {
+            content: "● ";
+            color: var(--kick-green);
+        }
+
         .member-btn:hover { background-color: var(--hover-bg); }
         .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
+        .member-btn.active .viewer-count,
+        .member-btn.active .viewer-count.live::before {
+            color: #000 !important;
+        }
 
         #scroll-top-btn {
             position: absolute; bottom: 0; left: 0; right: 0;
@@ -245,7 +254,7 @@
                     ${avatarHTML}
                     <span>${item.name}</span>
                 </div>
-                ${item.viewers >= 1 ? `<span class="viewer-count">${item.viewers.toLocaleString('de-DE')}</span>` : ''}
+                ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">● ${item.viewers.toLocaleString('de-DE')}</span>` : ''}
             `;
 
             btn.onclick = () => loadStream(item.name, btn);
