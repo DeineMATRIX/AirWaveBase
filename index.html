@@ -39,6 +39,7 @@
             gap: 15px;
             box-shadow: 0 0 30px rgba(0,0,0,0.9);
             position: relative;
+            min-height: calc(100vh - 60px);
         }
 
         .column-left {
@@ -52,7 +53,7 @@
         #team-logo { 
             width: 230px; 
             height: 230px; 
-            background-size: contain;     /* ← Keine Verzerrung */
+            background-size: contain; 
             background-position: center;
             background-repeat: no-repeat;
             border-radius: 2px;
@@ -61,8 +62,28 @@
 
         .section-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; padding: 0 5px; display: flex; justify-content: space-between; }
 
-        #team-list-wrapper { position: relative; background: var(--menu-bg); border-radius: 2px; overflow: hidden; }
-        #team-list { display: flex; flex-direction: column; max-height: 336px; overflow-y: auto; padding-bottom: 45px; }
+        #team-list-wrapper { 
+            position: relative; 
+            background: var(--menu-bg); 
+            border-radius: 2px; 
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #team-list { 
+            flex: 1;
+            display: flex; 
+            flex-direction: column; 
+            overflow-y: auto; 
+            padding-bottom: 45px;
+            scrollbar-width: thin;
+            scrollbar-color: #555 #1f1f23;
+        }
+
+        #team-list::-webkit-scrollbar { width: 6px; }
+        #team-list::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
 
         .member-btn {
             display: flex;
@@ -90,13 +111,13 @@
         }
 
         .viewer-count {
-            color: #888;
+            color: #fff;
             font-size: 14px;
-            min-width: 75px;
+            min-width: 80px;
             text-align: right;
         }
         .viewer-count.live { color: var(--kick-green); }
-        .member-btn.active .viewer-count { color: #000 !important; } /* Schwarz bei Auswahl */
+        .member-btn.active .viewer-count { color: #000; }
 
         .member-btn:hover { background-color: var(--hover-bg); }
         .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
@@ -138,7 +159,7 @@
         }
 
         @media (max-width: 950px) {
-            #main-wrapper { flex-direction: column; width: 95%; margin: 15px auto; padding: 15px; }
+            #main-wrapper { flex-direction: column; width: 95%; margin: 15px auto; padding: 15px; min-height: auto; }
             .mobile-top { display: flex; gap: 10px; margin-bottom: 12px; }
             #mobile-logo { width: 75px; height: 75px; background-size: contain; border-radius: 2px; }
             #mobile-banner { flex: 1; height: 75px; background-size: cover; border-radius: 2px; }
@@ -157,7 +178,7 @@
 
     <div class="column-left">
         <div id="team-logo"></div>
-        <aside>
+        <aside style="flex:1;display:flex;flex-direction:column;">
             <div class="section-title">
                 <span>Team Members</span>
                 <span id="member-count">0</span>
@@ -217,7 +238,6 @@
 
         const members = await Promise.all(promises);
 
-        // Sortierung: Live oben, darunter zufällig
         const live = members.filter(m => m.isLive).sort((a,b) => b.viewers - a.viewers);
         const offline = members.filter(m => !m.isLive).sort(() => Math.random() - 0.5);
 
@@ -238,7 +258,7 @@
                     ${avatarHTML}
                     <span>${item.name}</span>
                 </div>
-                ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">${item.viewers.toLocaleString('de-DE')}</span>` : ''}
+                ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">● ${item.viewers.toLocaleString('de-DE')}</span>` : ''}
             `;
 
             btn.onclick = () => loadStream(item.name, btn);
@@ -268,6 +288,14 @@
         }
     }
 
+    function updateListHeight() {
+        const isMobile = window.innerWidth <= 950;
+        if (isMobile) return;
+        
+        const available = window.innerHeight - 180; // Abstand für Header + Footer
+        listContainer.style.maxHeight = `${available}px`;
+    }
+
     function init() {
         const logoUrl = TEAM_DATA.TEAM_LOGO_URL || "logo.png";
         const bannerUrl = TEAM_DATA.TEAM_BANNER_URL || "banner.jpg";
@@ -281,6 +309,9 @@
         document.getElementById('team-desc-container').innerHTML = TEAM_DATA.TEAM_BESCHREIBUNG;
 
         buildTeamList();
+        updateListHeight();
+
+        window.addEventListener('resize', updateListHeight);
 
         listContainer.onscroll = () => {
             document.getElementById('scroll-top-btn').style.display = listContainer.scrollTop > 80 ? "block" : "none";
