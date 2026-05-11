@@ -70,7 +70,7 @@
         #team-list { 
             display: flex; 
             flex-direction: column; 
-            max-height: 336px;        /* Begrenzung wie gewünscht */
+            max-height: 340px;        /* wird dynamisch angepasst */
             overflow-y: auto;
             padding-bottom: 45px;
         }
@@ -109,6 +109,7 @@
         .viewer-count.live::before {
             content: "● ";
             color: var(--kick-green);
+            margin-right: 4px;
         }
 
         .member-btn:hover { background-color: var(--hover-bg); }
@@ -144,7 +145,7 @@
 
         #copyright {
             position: absolute;
-            bottom: 12px;
+            bottom: 15px;
             right: 15px;
             font-size: 11px;
             color: var(--text-muted);
@@ -280,6 +281,16 @@
         }
     }
 
+    function syncMenuHeight() {
+        const infoPanel = document.querySelector('.info-panel');
+        const listWrapper = document.getElementById('team-list-wrapper');
+        
+        if (infoPanel && listWrapper) {
+            const targetHeight = infoPanel.offsetHeight + 140; // Banner + Abstände anpassen
+            listWrapper.style.height = `${targetHeight}px`;
+        }
+    }
+
     function init() {
         const logoUrl = TEAM_DATA.TEAM_LOGO_URL || "logo.png";
         const bannerUrl = TEAM_DATA.TEAM_BANNER_URL || "banner.jpg";
@@ -293,6 +304,10 @@
         document.getElementById('team-desc-container').innerHTML = TEAM_DATA.TEAM_BESCHREIBUNG;
 
         buildTeamList();
+
+        // Höhe nach Laden anpassen
+        setTimeout(syncMenuHeight, 400);
+        window.addEventListener('resize', syncMenuHeight);
     }
 
     function scrollToTop() {
