@@ -101,18 +101,11 @@
             background: #222;
         }
 
-        /* WICHTIG: Normale Textfarbe + hohe Priorität */
         .viewer-count {
-            color: var(--text-main) !important;
+            color: var(--text-main);
             font-size: 14px;
             min-width: 80px;
             text-align: right;
-        }
-        .viewer-count.live {
-            color: var(--kick-green) !important;
-        }
-        .member-btn.active .viewer-count {
-            color: #000 !important;
         }
 
         .member-btn:hover { background-color: var(--hover-bg); }
@@ -252,7 +245,7 @@
                     ${avatarHTML}
                     <span>${item.name}</span>
                 </div>
-                ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">● ${item.viewers.toLocaleString('de-DE')}</span>` : ''}
+                ${item.viewers >= 1 ? `<span class="viewer-count">${item.viewers.toLocaleString('de-DE')}</span>` : ''}
             `;
 
             btn.onclick = () => loadStream(item.name, btn);
