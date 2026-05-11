@@ -70,7 +70,7 @@
         #team-list { 
             display: flex; 
             flex-direction: column; 
-            max-height: 336px;        /* feste Begrenzung wie früher */
+            max-height: 336px;           /* feste Begrenzung wie gewünscht */
             overflow-y: auto;
             padding-bottom: 45px;
         }
@@ -106,9 +106,17 @@
             min-width: 80px;
             text-align: right;
         }
+        .viewer-count.live::before {
+            content: "● ";
+            color: var(--kick-green);
+        }
 
         .member-btn:hover { background-color: var(--hover-bg); }
         .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: 700; }
+        .member-btn.active .viewer-count,
+        .member-btn.active .viewer-count.live::before {
+            color: #000 !important;
+        }
 
         #scroll-top-btn {
             position: absolute; bottom: 0; left: 0; right: 0;
@@ -206,9 +214,6 @@
     document.getElementById("year").textContent = new Date().getFullYear();
 
     async function buildTeamList() {
-        // Alten Inhalt kurz beibehalten
-        const oldHTML = listContainer.innerHTML;
-
         const promises = TEAM_DATA.MITGLIEDER.map(name => 
             fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`)
                 .then(r => r.json())
