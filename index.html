@@ -33,6 +33,7 @@
             margin: 30px auto;
             background-color: var(--bg-frame);
             padding: 15px;
+            padding-bottom: 28px;
             border-radius: 2px;
             display: flex;
             gap: 15px;
@@ -44,7 +45,7 @@
             width: 270px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 15px;
             margin-left: -15px;
         }
 
@@ -107,7 +108,7 @@
         }
 
         .viewer-count {
-            color: var(--text-main);
+            color: var(--text-main);           /* gleiche Farbe wie Teamname */
             font-size: 14px;
             min-width: 80px;
             text-align: right;
@@ -125,12 +126,7 @@
             cursor: pointer; border-top: 1px solid #333;
         }
 
-        .column-right { 
-            width: 640px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-        }
+        .column-right { width: 640px; display: flex; flex-direction: column; gap: 12px; }
         #team-banner { width: 640px; height: 115px; background-size: cover; background-position: center; border-radius: 2px; background-color: #000; }
 
         .player-wrapper { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 2px; overflow: hidden; }
@@ -147,12 +143,7 @@
         }
         .about-btn:hover { background: #2a2a2f; color: var(--kick-green-hover); }
 
-        .info-panel { 
-            background: var(--menu-bg); 
-            padding: 15px; 
-            border-radius: 2px; 
-            flex-grow: 1;
-        }
+        .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
 
         #copyright {
             position: absolute;
@@ -183,7 +174,7 @@
 
     <div class="column-left">
         <div id="team-logo"></div>
-        <aside style="flex:1; display:flex; flex-direction:column;">
+        <aside style="flex:1;display:flex;flex-direction:column;">
             <div class="section-title">
                 <span>Team Members</span>
                 <span id="member-count">0</span>
@@ -224,8 +215,6 @@
     document.getElementById("year").textContent = new Date().getFullYear();
 
     async function buildTeamList() {
-        const oldContent = listContainer.innerHTML; // alten Inhalt beibehalten während Update
-
         const promises = TEAM_DATA.MITGLIEDER.map(name => 
             fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`)
                 .then(r => r.json())
@@ -294,19 +283,6 @@
         }
     }
 
-    function updateHeights() {
-        const isMobile = window.innerWidth <= 950;
-        if (isMobile) return;
-
-        const infoPanel = document.querySelector('.info-panel');
-        const leftCol = document.querySelector('.column-left');
-        
-        if (infoPanel && leftCol) {
-            const targetHeight = infoPanel.offsetHeight + 115 + 12 + 12; // Banner + Gaps
-            leftCol.style.height = `${targetHeight}px`;
-        }
-    }
-
     function init() {
         const logoUrl = TEAM_DATA.TEAM_LOGO_URL || "logo.png";
         const bannerUrl = TEAM_DATA.TEAM_BANNER_URL || "banner.jpg";
@@ -320,10 +296,6 @@
         document.getElementById('team-desc-container').innerHTML = TEAM_DATA.TEAM_BESCHREIBUNG;
 
         buildTeamList();
-
-        // Höhen anpassen nach Laden
-        setTimeout(updateHeights, 300);
-        window.addEventListener('resize', updateHeights);
 
         listContainer.onscroll = () => {
             document.getElementById('scroll-top-btn').style.display = listContainer.scrollTop > 80 ? "block" : "none";
