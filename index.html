@@ -33,7 +33,6 @@
             margin: 30px auto;
             background-color: var(--bg-frame);
             padding: 15px;
-            padding-bottom: 28px;
             border-radius: 2px;
             display: flex;
             gap: 15px;
@@ -75,12 +74,7 @@
             flex: 1;
             overflow-y: auto;
             padding-bottom: 45px;
-            scrollbar-width: thin;
-            scrollbar-color: #555 #1f1f23;
         }
-
-        #team-list::-webkit-scrollbar { width: 6px; }
-        #team-list::-webkit-scrollbar-thumb { background: #555; }
 
         .member-btn {
             display: flex;
@@ -108,7 +102,7 @@
         }
 
         .viewer-count {
-            color: var(--text-main);           /* Normale Textfarbe */
+            color: var(--text-main);        /* Normale Textfarbe */
             font-size: 14px;
             min-width: 80px;
             text-align: right;
@@ -174,7 +168,7 @@
 
     <div class="column-left">
         <div id="team-logo"></div>
-        <aside style="flex:1; display:flex; flex-direction:column;">
+        <aside style="flex:1;display:flex;flex-direction:column;">
             <div class="section-title">
                 <span>Team Members</span>
                 <span id="member-count">0</span>
@@ -296,10 +290,6 @@
         document.getElementById('team-desc-container').innerHTML = TEAM_DATA.TEAM_BESCHREIBUNG;
 
         buildTeamList();
-
-        listContainer.onscroll = () => {
-            document.getElementById('scroll-top-btn').style.display = listContainer.scrollTop > 80 ? "block" : "none";
-        };
     }
 
     function scrollToTop() {
