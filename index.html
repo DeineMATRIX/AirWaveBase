@@ -254,7 +254,7 @@
                     ${avatarHTML}
                     <span>${item.name}</span>
                 </div>
-                ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">● ${item.viewers.toLocaleString('de-DE')}</span>` : ''}
+                ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">${item.viewers.toLocaleString('de-DE')}</span>` : ''}
             `;
 
             btn.onclick = () => loadStream(item.name, btn);
