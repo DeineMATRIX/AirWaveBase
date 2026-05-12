@@ -77,7 +77,6 @@
             padding-bottom: 30px;
         }
 
-        /* Scrollbar wie vorher (Edge-Verhalten) */
         #team-list::-webkit-scrollbar { width: 6px; }
         #team-list::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
         #team-list::-webkit-scrollbar-track { background: #1f1f23; }
@@ -172,6 +171,7 @@
             #main-wrapper { 
                 flex-direction: column; 
                 width: 95%; 
+                max-width: 100%;
                 margin: 15px auto; 
                 padding: 15px; 
             }
@@ -179,7 +179,8 @@
             .mobile-top { 
                 display: flex; 
                 gap: 10px; 
-                margin-bottom: 6px;   /* Abstand halbiert */
+                margin-bottom: 6px; 
+                width: 100%;
             }
 
             #mobile-logo { 
@@ -187,12 +188,15 @@
                 height: 75px; 
                 background-size: contain; 
                 border-radius: 2px; 
+                flex-shrink: 0;
             }
             #mobile-banner { 
                 flex: 1; 
                 height: 75px; 
                 background-size: cover; 
+                background-position: center;
                 border-radius: 2px; 
+                min-width: 0;
             }
 
             .column-left > #team-logo, 
@@ -210,7 +214,7 @@
             }
 
             #team-list {
-                max-height: 250px;   /* ca. 5 Mitglieder */
+                max-height: 250px;
             }
         }
     </style>
