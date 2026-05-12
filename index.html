@@ -73,29 +73,20 @@
 
         #team-list {
             flex: 1;
-            overflow-y: overlay;           /* Hauptlösung */
+            overflow-y: auto;
             padding-bottom: 30px;
-            scrollbar-width: thin;         /* Firefox */
-            scrollbar-color: #555 #1f1f23;
         }
 
-        /* WebKit / Edge / Chrome - Overlay + dünn */
-        #team-list::-webkit-scrollbar {
-            width: 6px;
-        }
-        #team-list::-webkit-scrollbar-thumb {
-            background: #555;
-            border-radius: 3px;
-        }
-        #team-list::-webkit-scrollbar-track {
-            background: transparent;
-        }
+        /* Scrollbar wie vorher */
+        #team-list::-webkit-scrollbar { width: 6px; }
+        #team-list::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
+        #team-list::-webkit-scrollbar-track { background: #1f1f23; }
 
         .member-btn {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 6px 10px;
+            padding: 2px 10px;   /* wie gewünscht */
             background: transparent;
             color: var(--text-main);
             cursor: pointer;
@@ -176,13 +167,58 @@
             opacity: 0.8;
         }
 
+        /* ==================== MOBILE ==================== */
         @media (max-width: 950px) {
-            #main-wrapper { flex-direction: column; width: 95%; margin: 15px auto; padding: 15px; }
-            .mobile-top { display: flex; gap: 10px; margin-bottom: 12px; }
-            #mobile-logo { width: 75px; height: 75px; background-size: contain; border-radius: 2px; }
-            #mobile-banner { flex: 1; height: 75px; background-size: cover; border-radius: 2px; }
-            .column-left > #team-logo, .column-right > #team-banner { display: none; }
-            .column-left { margin-left: 0; width: 100%; }
+            #main-wrapper { 
+                flex-direction: column; 
+                width: 95%; 
+                margin: 15px auto; 
+                padding: 15px; 
+                max-width: 100%;
+            }
+
+            .mobile-top { 
+                display: flex; 
+                gap: 10px; 
+                margin-bottom: 12px; 
+            }
+
+            #mobile-logo { 
+                width: 75px; 
+                height: 75px; 
+                background-size: contain; 
+                border-radius: 2px; 
+            }
+            #mobile-banner { 
+                flex: 1; 
+                height: 75px; 
+                background-size: cover; 
+                border-radius: 2px; 
+            }
+
+            .column-left > #team-logo, 
+            .column-right > #team-banner { 
+                display: none; 
+            }
+
+            .column-left { 
+                margin-left: 0; 
+                width: 100%; 
+            }
+
+            /* Mobile Begrenzung für Player, About & Info */
+            .column-right {
+                width: 100% !important;
+                max-width: 100%;
+            }
+
+            #team-list {
+                max-height: 250px;   /* ca. 5 Mitglieder */
+            }
+
+            .section-title {
+                margin-top: 8px;   /* Abstand Logo → Team Members wie Desktop */
+            }
         }
     </style>
 </head>
