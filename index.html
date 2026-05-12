@@ -166,7 +166,6 @@
             opacity: 0.8;
         }
 
-        /* ==================== MOBILE ==================== */
         @media (max-width: 950px) {
             #main-wrapper { 
                 flex-direction: column; 
@@ -196,7 +195,6 @@
                 background-size: cover; 
                 background-position: center;
                 border-radius: 2px; 
-                min-width: 0;
             }
 
             .column-left > #team-logo, 
@@ -316,13 +314,16 @@
         element.classList.add('active');
     }
 
+    // === ANTI-APP ÖFFNEN FUNKTION ===
     function openAboutPage() {
-        if (currentMember) {
-            const currentSrc = player.src;
-            player.src = "";
-            setTimeout(() => player.src = currentSrc, 100);
-            window.open(`https://kick.com/${currentMember}/about`, '_blank', 'noopener,noreferrer');
-        }
+        if (!currentMember) return;
+        
+        const url = `https://kick.com/${currentMember}/about`;
+        
+        // Kleine Verzögerung verhindert das Öffnen der KICK App
+        setTimeout(() => {
+            window.open(url, '_blank', 'noopener,noreferrer');
+        }, 150);
     }
 
     function init() {
