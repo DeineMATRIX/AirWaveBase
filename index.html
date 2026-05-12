@@ -314,16 +314,26 @@
         element.classList.add('active');
     }
 
-    // === VERBESSERTE ANTI-APP FUNKTION ===
+    // === DIREKTER DEEP LINK ZUR ABOUT SEITE ===
     function openAboutPage() {
         if (!currentMember) return;
         
-        const url = `https://kick.com/${currentMember}/about`;
-        
-        // Stärkere Methode gegen App-Öffnen
+        const username = currentMember.trim();
+        const deepLink = `kick://channel/${username}/about`;
+        const webUrl = `https://kick.com/${username}/about`;
+
+        // Versuch den Deep Link zuerst
+        const a = document.createElement('a');
+        a.href = deepLink;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+
+        // Fallback nach 450ms
         setTimeout(() => {
-            window.open(url, '_blank', 'noopener,noreferrer');
-        }, 300);   // längere Verzögerung
+            window.open(webUrl, '_blank', 'noopener,noreferrer');
+        }, 450);
     }
 
     function init() {
