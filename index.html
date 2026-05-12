@@ -307,45 +307,20 @@
         element.classList.add('active');
     }
 
-    // === OPTIMIERTE ABOUT FUNKTION ===
+    // === SMART LINK (wie von dir gewünscht) ===
     function openAboutPage() {
         if (!currentMember) return;
         
-        const username = currentMember.trim().toLowerCase();
-        const webAbout = `https://kick.com/${username}/about`;
-
+        const streamer = currentMember.trim();
         const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-        if (!isMobile) {
-            window.open(webAbout, '_blank', 'noopener,noreferrer');
-            return;
+        if (isMobile) {
+            // Handy → App öffnen (Profil)
+            window.location.href = `https://kick.com/${streamer}`;
+        } else {
+            // PC → Direkt About Seite
+            window.open(`https://kick.com/${streamer}/about`, '_blank', 'noopener,noreferrer');
         }
-
-        // Mobile Deep Link Versuche (bessere Reihenfolge)
-        const deepLinks = [
-            `kick://user/${username}/about`,
-            `kick://channel/${username}/about`,
-            `kick://@${username}/about`,
-            `kick://user/${username}`
-        ];
-
-        deepLinks.forEach((link, index) => {
-            setTimeout(() => {
-                const a = document.createElement('a');
-                a.href = link;
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }, index * 100);
-        });
-
-        // Fallback: Wenn App nicht reagiert → About Seite im Browser
-        setTimeout(() => {
-            if (document.visibilityState === 'visible') {
-                window.open(webAbout, '_blank', 'noopener,noreferrer');
-            }
-        }, 650);
     }
 
     function init() {
