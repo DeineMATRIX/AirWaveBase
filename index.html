@@ -149,13 +149,6 @@
         .about-btn:hover { background: #2a2a2f; color: var(--kick-green-hover); }
 
         .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
-        .info-panel a { 
-            color: var(--kick-green); 
-            text-decoration: none; 
-        }
-        .info-panel a:hover { 
-            text-decoration: underline; 
-        }
 
         #copyright {
             position: absolute;
@@ -314,26 +307,35 @@
         element.classList.add('active');
     }
 
-    // === DIREKTER DEEP LINK ZUR ABOUT SEITE ===
+    // === STÄRKERE DEEP LINK VERSION ===
     function openAboutPage() {
         if (!currentMember) return;
         
-        const username = currentMember.trim();
-        const deepLink = `kick://channel/${username}/about`;
+        const username = currentMember.trim().toLowerCase();
         const webUrl = `https://kick.com/${username}/about`;
 
-        // Versuch den Deep Link zuerst
-        const a = document.createElement('a');
-        a.href = deepLink;
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        // Mehrere Deep Link Versuche
+        const links = [
+            `kick://user/${username}/about`,
+            `kick://channel/${username}/about`,
+            `kick://@${username}/about`
+        ];
 
-        // Fallback nach 450ms
+        links.forEach((deepLink, index) => {
+            setTimeout(() => {
+                const a = document.createElement('a');
+                a.href = deepLink;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }, index * 150);
+        });
+
+        // Fallback Web nach 700ms
         setTimeout(() => {
             window.open(webUrl, '_blank', 'noopener,noreferrer');
-        }, 450);
+        }, 700);
     }
 
     function init() {
