@@ -307,33 +307,29 @@
         element.classList.add('active');
     }
 
-    // === INTELLIGENTE APP-ERKENnung ===
+    // === OPTIMIERTE ABOUT FUNKTION ===
     function openAboutPage() {
         if (!currentMember) return;
         
         const username = currentMember.trim().toLowerCase();
-        const webAboutUrl = `https://kick.com/${username}/about`;
-        const webProfileUrl = `https://kick.com/${username}`;
+        const webAbout = `https://kick.com/${username}/about`;
 
         const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
         if (!isMobile) {
-            // Desktop → direkt About Seite
-            window.open(webAboutUrl, '_blank', 'noopener,noreferrer');
+            window.open(webAbout, '_blank', 'noopener,noreferrer');
             return;
         }
 
-        // === MOBILE: App versuchen ===
-        let appOpened = false;
-
-        // Deep Link Versuche
+        // Mobile Deep Link Versuche (bessere Reihenfolge)
         const deepLinks = [
             `kick://user/${username}/about`,
             `kick://channel/${username}/about`,
-            `kick://@${username}`
+            `kick://@${username}/about`,
+            `kick://user/${username}`
         ];
 
-        deepLinks.forEach((link, i) => {
+        deepLinks.forEach((link, index) => {
             setTimeout(() => {
                 const a = document.createElement('a');
                 a.href = link;
@@ -341,15 +337,15 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
-            }, i * 120);
+            }, index * 100);
         });
 
-        // Wenn nach 800ms immer noch auf unserer Seite ist → App ist nicht installiert
+        // Fallback: Wenn App nicht reagiert → About Seite im Browser
         setTimeout(() => {
             if (document.visibilityState === 'visible') {
-                window.open(webAboutUrl, '_blank', 'noopener,noreferrer');
+                window.open(webAbout, '_blank', 'noopener,noreferrer');
             }
-        }, 800);
+        }, 650);
     }
 
     function init() {
