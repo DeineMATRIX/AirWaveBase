@@ -9,6 +9,7 @@ const TEAM_DATA = {
         "DeineMATRIX",
         "djp3itsch3",
         "djtotygee",
+        "djsetsrocka",
         "drwolliakadrpfeffi",
         "holzi_music",
         "MarcoDeejayChannel",
