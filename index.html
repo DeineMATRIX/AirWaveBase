@@ -307,35 +307,20 @@
         element.classList.add('active');
     }
 
-    // === STÄRKERE DEEP LINK VERSION ===
+    // === NEUE SMART LINK FUNKTION ===
     function openAboutPage() {
         if (!currentMember) return;
         
-        const username = currentMember.trim().toLowerCase();
-        const webUrl = `https://kick.com/${username}/about`;
+        const streamer = currentMember.trim();
+        const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-        // Mehrere Deep Link Versuche
-        const links = [
-            `kick://user/${username}/about`,
-            `kick://channel/${username}/about`,
-            `kick://@${username}/about`
-        ];
-
-        links.forEach((deepLink, index) => {
-            setTimeout(() => {
-                const a = document.createElement('a');
-                a.href = deepLink;
-                a.style.display = 'none';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }, index * 150);
-        });
-
-        // Fallback Web nach 700ms
-        setTimeout(() => {
-            window.open(webUrl, '_blank', 'noopener,noreferrer');
-        }, 700);
+        if (isMobile) {
+            // Auf Handy → Hauptprofil (sollte die App öffnen)
+            window.location.href = `https://kick.com/${streamer}`;
+        } else {
+            // Auf Desktop/PC → direkt zur About Seite
+            window.open(`https://kick.com/${streamer}/about`, '_blank', 'noopener,noreferrer');
+        }
     }
 
     function init() {
