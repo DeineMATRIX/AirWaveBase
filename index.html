@@ -149,6 +149,15 @@
         .about-btn:hover { background: #2a2a2f; color: var(--kick-green-hover); }
 
         .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
+        
+        /* Link-Farbe in der Team-Beschreibung */
+        .info-panel a { 
+            color: var(--kick-green) !important; 
+            text-decoration: none; 
+        }
+        .info-panel a:hover { 
+            text-decoration: underline; 
+        }
 
         #copyright {
             position: absolute;
@@ -307,10 +316,8 @@
         element.classList.add('active');
     }
 
-    // === SAUBERE LÖSUNG: Immer im Browser öffnen ===
     function openAboutPage() {
         if (!currentMember) return;
-        
         const username = currentMember.trim();
         window.open(`https://kick.com/${username}/about`, '_blank', 'noopener,noreferrer');
     }
