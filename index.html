@@ -74,7 +74,8 @@
         #team-list {
             flex: 1;
             overflow-y: auto;
-            padding-bottom: 30px;   /* Abstand für Back to Top Button */
+            padding-bottom: 30px;   /* wie gewünscht */
+            scrollbar-gutter: stable; /* Verhindert Verschiebung der Zuschauerzahl */
         }
 
         /* Scrollbar Styling */
@@ -299,7 +300,6 @@
         listContainer.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Back to Top Button
     listContainer.onscroll = function() {
         document.getElementById('scroll-top-btn').style.display = 
             this.scrollTop > 100 ? "block" : "none";
