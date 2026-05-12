@@ -307,20 +307,12 @@
         element.classList.add('active');
     }
 
-    // === SMART LINK (wie von dir gewünscht) ===
+    // === SAUBERE LÖSUNG: Immer im Browser öffnen ===
     function openAboutPage() {
         if (!currentMember) return;
         
-        const streamer = currentMember.trim();
-        const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-
-        if (isMobile) {
-            // Handy → App öffnen (Profil)
-            window.location.href = `https://kick.com/${streamer}/about`;
-        } else {
-            // PC → Direkt About Seite
-            window.open(`https://kick.com/${streamer}/about`, '_blank', 'noopener,noreferrer');
-        }
+        const username = currentMember.trim();
+        window.open(`https://kick.com/${username}/about`, '_blank', 'noopener,noreferrer');
     }
 
     function init() {
