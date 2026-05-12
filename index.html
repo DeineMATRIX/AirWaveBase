@@ -307,20 +307,49 @@
         element.classList.add('active');
     }
 
-    // === NEUE SMART LINK FUNKTION ===
+    // === INTELLIGENTE APP-ERKENnung ===
     function openAboutPage() {
         if (!currentMember) return;
         
-        const streamer = currentMember.trim();
+        const username = currentMember.trim().toLowerCase();
+        const webAboutUrl = `https://kick.com/${username}/about`;
+        const webProfileUrl = `https://kick.com/${username}`;
+
         const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
 
-        if (isMobile) {
-            // Auf Handy → Hauptprofil (sollte die App öffnen)
-            window.location.href = `https://kick.com/${streamer}`;
-        } else {
-            // Auf Desktop/PC → direkt zur About Seite
-            window.open(`https://kick.com/${streamer}/about`, '_blank', 'noopener,noreferrer');
+        if (!isMobile) {
+            // Desktop → direkt About Seite
+            window.open(webAboutUrl, '_blank', 'noopener,noreferrer');
+            return;
         }
+
+        // === MOBILE: App versuchen ===
+        let appOpened = false;
+
+        // Deep Link Versuche
+        const deepLinks = [
+            `kick://user/${username}/about`,
+            `kick://channel/${username}/about`,
+            `kick://@${username}`
+        ];
+
+        deepLinks.forEach((link, i) => {
+            setTimeout(() => {
+                const a = document.createElement('a');
+                a.href = link;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }, i * 120);
+        });
+
+        // Wenn nach 800ms immer noch auf unserer Seite ist → App ist nicht installiert
+        setTimeout(() => {
+            if (document.visibilityState === 'visible') {
+                window.open(webAboutUrl, '_blank', 'noopener,noreferrer');
+            }
+        }, 800);
     }
 
     function init() {
