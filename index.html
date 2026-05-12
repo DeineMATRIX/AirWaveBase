@@ -314,16 +314,16 @@
         element.classList.add('active');
     }
 
-    // === ANTI-APP ÖFFNEN FUNKTION ===
+    // === VERBESSERTE ANTI-APP FUNKTION ===
     function openAboutPage() {
         if (!currentMember) return;
         
         const url = `https://kick.com/${currentMember}/about`;
         
-        // Kleine Verzögerung verhindert das Öffnen der KICK App
+        // Stärkere Methode gegen App-Öffnen
         setTimeout(() => {
             window.open(url, '_blank', 'noopener,noreferrer');
-        }, 150);
+        }, 300);   // längere Verzögerung
     }
 
     function init() {
