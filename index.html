@@ -73,14 +73,23 @@
 
         #team-list {
             flex: 1;
-            overflow-y: overlay;        /* Wichtig: Overlay-Verhalten wie Firefox */
+            overflow-y: overlay;           /* Hauptlösung */
             padding-bottom: 30px;
+            scrollbar-width: thin;         /* Firefox */
+            scrollbar-color: #555 #1f1f23;
         }
 
-        /* Scrollbar Styling */
-        #team-list::-webkit-scrollbar { width: 6px; }
-        #team-list::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
-        #team-list::-webkit-scrollbar-track { background: transparent; }
+        /* WebKit / Edge / Chrome - Overlay + dünn */
+        #team-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        #team-list::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 3px;
+        }
+        #team-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
 
         .member-btn {
             display: flex;
