@@ -29,11 +29,4 @@ const TEAM_DATA = {
 
     TEAM_LOGO_URL: "logo.png",
     TEAM_BANNER_URL: "banner.jpg"
-        
-    <!-- Für alle modernen Browser (Tabs und Lesezeichen) -->
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-
-<!-- Für Smartphones (wenn die Seite auf dem Startbildschirm gespeichert wird) -->
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    
 };
