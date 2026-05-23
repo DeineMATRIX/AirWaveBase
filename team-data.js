@@ -1,7 +1,7 @@
 // team-data.js
 const TEAM_DATA = {
     TEAM_NAME: "AirWaveBase",
-    TEAM_BESCHREIBUNG: "The first KICK Team site.<br><br>We’re a collective of DJs from all over the world who are passionate about music and community, and we’re thrilled to have you as part of it. We cover all genres of music.<br><br>Feel free to check out each of us and discover both familiar favorites and new finds that you’ll love.<br><br>🎧 Sharing, discovering, and enjoying the music together<br><br>✨ AirWaveBase is here to support DJs on KICK<br>Join us! Boost your visibility both online and offline, and much more. <a href='https://discord.gg' target='_blank'>Discord</a>",
+    TEAM_BESCHREIBUNG: "The first KICK Team site.<br><br>We’re a collective of DJs from all over the world who are passionate about music and community, and we’re thrilled to have you as part of it. We cover all genres of music.<br><br>Do pop in to see each of us – you’ll find both familiar favourites and new discoveries that you’re sure to love.<br><br>🎧 Sharing, discovering, and enjoying the music together<br><br>🌊 AirWaveBase is here to support DJs on KICK<br>Join us! Boost your visibility both online and offline, and much more. <a href='https://discord.gg' target='_blank'>Discord</a>",
     
     MITGLIEDER: [
         "6hulksmash6",
