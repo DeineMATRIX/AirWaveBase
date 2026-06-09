@@ -19,6 +19,7 @@ const TEAM_DATA = {
         "djaaron",
         "djswayforth",
         "techone",
+        "sebastianhilgenfeldmusic",
         "TeamMember_1",
         "TeamMember_2",
         "TeamMember_3",
