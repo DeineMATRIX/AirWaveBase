@@ -1,0 +1,10 @@
+{
+  "name": "airwavebase",
+  "version": "1.0.0",
+  "scripts": {
+    "obfuscate": "node obfuscate.js"
+  },
+  "devDependencies": {
+    "javascript-obfuscator": "^5.4.3"
+  }
+}

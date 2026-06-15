@@ -5,16 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
     <title>AirWaveBase</title>
-    <!-- Für alle modernen Browser (Tabs und  Lesezeichen) -->
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-
-    <!-- Für Smartphones (wenn die Seite auf dem Startbildschirm gespeichert wird) -->
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-
-
     
-    <script src="team-data.js"></script>
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
    
+    <!-- Scripts -->
+    <script src="team-data.js"></script>
+    <script src="main-obfuscated.js"></script>
+  
     <style>
         :root {
             --kick-green: #53fc18;
@@ -27,14 +26,12 @@
             --hover-bg: #3a3a3f;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; border: none !important; outline: none !important; }
-
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg-page) url('hintergrund.jpg') center/cover fixed;
             color: var(--text-main);
             user-select: none;
         }
-
         #main-wrapper {
             width: 990px;
             margin: 30px auto;
@@ -46,7 +43,6 @@
             box-shadow: 0 0 30px rgba(0,0,0,0.9);
             position: relative;
         }
-
         .column-left {
             width: 305px;
             display: flex;
@@ -54,7 +50,6 @@
             gap: 15px;
             margin-left: -15px;
         }
-
         #team-logo {
             width: 305px;
             height: 305px;
@@ -64,9 +59,7 @@
             border-radius: 2px;
             background-color: #000;
         }
-
         .section-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; padding: 0 5px; display: flex; justify-content: space-between; }
-
         #team-list-wrapper {
             position: relative;
             background: var(--menu-bg);
@@ -77,17 +70,14 @@
             display: flex;
             flex-direction: column;
         }
-
         #team-list {
             flex: 1;
             overflow-y: auto;
             padding-bottom: 30px;
         }
-
         #team-list::-webkit-scrollbar { width: 6px; }
         #team-list::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
         #team-list::-webkit-scrollbar-track { background: #1f1f23; }
-
         .member-btn {
             display: flex;
             align-items: center;
@@ -101,9 +91,7 @@
             transition: 0.1s;
             height: 50px;
         }
-
         .member-left { display: flex; align-items: center; flex: 1; }
-
         .avatar {
             width: 35px;
             height: 35px;
@@ -112,7 +100,6 @@
             object-fit: cover;
             background: #222;
         }
-
         .viewer-count {
             color: var(--text-main);
             font-size: 15px;
@@ -123,27 +110,22 @@
             content: "● ";
             color: var(--kick-green);
         }
-
         .member-btn:hover { background-color: var(--hover-bg); }
         .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: normal; }
         .member-btn.active .viewer-count,
         .member-btn.active .viewer-count.live::before {
             color: #000 !important;
         }
-
         #scroll-top-btn {
             position: absolute; bottom: 0; left: 0; right: 0;
             display: none; padding: 8px; background: #1a1a1e;
             color: var(--text-main); font-size: 11px; text-align: center;
             cursor: pointer; border-top: 1px solid #333;
         }
-
         .column-right { width: 640px; display: flex; flex-direction: column; gap: 12px; }
         #team-banner { width: 640px; height: 150px; background-size: cover; background-position: center; border-radius: 2px; background-color: #000; }
-
         .player-wrapper { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 2px; overflow: hidden; }
         iframe { width: 100%; height: 100%; border: none; }
-
         .about-btn {
             background: var(--menu-bg);
             color: var(--kick-green);
@@ -154,18 +136,14 @@
             cursor: pointer;
         }
         .about-btn:hover { background: #2a2a2f; color: var(--kick-green-hover); }
-
         .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
-        
-        /* Link-Farbe in der Team-Beschreibung */
-        .info-panel a { 
-            color: var(--kick-green) !important; 
-            text-decoration: none; 
+        .info-panel a {
+            color: var(--kick-green) !important;
+            text-decoration: none;
         }
-        .info-panel a:hover { 
-            text-decoration: underline; 
+        .info-panel a:hover {
+            text-decoration: underline;
         }
-
         #copyright {
             position: absolute;
             bottom: 1px;
@@ -174,52 +152,45 @@
             color: var(--text-muted);
             opacity: 0.8;
         }
-
         @media (max-width: 950px) {
-            #main-wrapper { 
-                flex-direction: column; 
-                width: 95%; 
+            #main-wrapper {
+                flex-direction: column;
+                width: 95%;
                 max-width: 100%;
-                margin: 15px auto; 
-                padding: 15px; 
+                margin: 15px auto;
+                padding: 15px;
             }
-
-            .mobile-top { 
-                display: flex; 
-                gap: 10px; 
-                margin-bottom: 6px; 
+            .mobile-top {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 6px;
                 width: 100%;
             }
-
-            #mobile-logo { 
-                width: 75px; 
-                height: 75px; 
-                background-size: contain; 
-                border-radius: 2px; 
+            #mobile-logo {
+                width: 75px;
+                height: 75px;
+                background-size: contain;
+                border-radius: 2px;
                 flex-shrink: 0;
             }
-            #mobile-banner { 
-                flex: 1; 
-                height: 75px; 
-                background-size: cover; 
+            #mobile-banner {
+                flex: 1;
+                height: 75px;
+                background-size: cover;
                 background-position: center;
-                border-radius: 2px; 
+                border-radius: 2px;
             }
-
-            .column-left > #team-logo, 
-            .column-right > #team-banner { 
-                display: none; 
+            .column-left > #team-logo,
+            .column-right > #team-banner {
+                display: none;
             }
-
-            .column-left { 
-                margin-left: 0; 
-                width: 100%; 
+            .column-left {
+                margin-left: 0;
+                width: 100%;
             }
-
             .column-right {
                 width: 100% !important;
             }
-
             #team-list {
                 max-height: 250px;
             }
@@ -250,7 +221,7 @@
         <div class="player-wrapper">
             <iframe id="main-player"></iframe>
         </div>
-      
+     
         <div id="about-btn" class="about-btn" onclick="openAboutPage()">
             About <span id="current-member-name">TeamMember</span>
         </div>
@@ -261,96 +232,5 @@
     </div>
     <div id="copyright">© <span id="year"></span> DeineMATRIX</div>
 </div>
-
-<script>
-    const WORKER_URL = "https://airwavebase-kick-api.neonator-4d6.workers.dev";
-    let currentMember = "";
-
-    const listContainer = document.getElementById('team-list');
-    const player = document.getElementById('main-player');
-    const currentNameSpan = document.getElementById('current-member-name');
-
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    async function buildTeamList() {
-        const promises = TEAM_DATA.MITGLIEDER.map(name =>
-            fetch(`${WORKER_URL}?username=${encodeURIComponent(name)}`)
-                .then(r => r.json())
-                .then(raw => {
-                    const data = raw.data || raw;
-                    const stream = data.livestream;
-                    const user = data.user || {};
-                    return {
-                        name,
-                        avatar: user.profile_pic || user.avatar,
-                        viewers: stream?.viewer_count || 0,
-                        isLive: !!stream
-                    };
-                })
-                .catch(() => ({ name, avatar: null, viewers: 0, isLive: false }))
-        );
-        const members = await Promise.all(promises);
-        const live = members.filter(m => m.isLive).sort((a,b) => b.viewers - a.viewers);
-        const offline = members.filter(m => !m.isLive).sort(() => Math.random() - 0.5);
-        const sorted = [...live, ...offline];
-        listContainer.innerHTML = '';
-        sorted.forEach(item => {
-            const btn = document.createElement('button');
-            btn.className = 'member-btn';
-            const avatarHTML = item.avatar
-                ? `<img class="avatar" src="${item.avatar}" onerror="this.style.display='none';this.parentElement.insertAdjacentHTML('afterbegin','<div class=\\'avatar\\' style=\\'background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;\\'>${item.name[0]}</div>')">`
-                : `<div class="avatar" style="background:#333;color:white;display:flex;align-items:center;justify-content:center;font-size:13px;">${item.name[0]}</div>`;
-            btn.innerHTML = `
-                <div class="member-left">
-                    ${avatarHTML}
-                    <span>${item.name}</span>
-                </div>
-                ${item.viewers >= 1 ? `<span class="viewer-count ${item.isLive ? 'live' : ''}">${item.viewers.toLocaleString('de-DE')}</span>` : ''}
-            `;
-            btn.onclick = () => loadStream(item.name, btn);
-            listContainer.appendChild(btn);
-            if (!currentMember) loadStream(item.name, btn);
-        });
-        document.getElementById('member-count').textContent = TEAM_DATA.MITGLIEDER.length;
-    }
-
-    function loadStream(name, element) {
-        currentMember = name.trim();
-        currentNameSpan.textContent = currentMember;
-        player.src = `https://player.kick.cx/${currentMember}?fullscreen=false&quality=false&muted=false&reload=false&pip=false`;
-       
-        document.querySelectorAll('.member-btn').forEach(el => el.classList.remove('active'));
-        element.classList.add('active');
-    }
-
-    function openAboutPage() {
-        if (!currentMember) return;
-        const username = currentMember.trim();
-        window.open(`https://kick.com/${username}/about`, '_blank', 'noopener,noreferrer');
-    }
-
-    function init() {
-        const logoUrl = TEAM_DATA.TEAM_LOGO_URL || "logo.png";
-        const bannerUrl = TEAM_DATA.TEAM_BANNER_URL || "banner.jpg";
-        document.getElementById('team-logo').style.backgroundImage = `url('${logoUrl}')`;
-        document.getElementById('team-banner').style.backgroundImage = `url('${bannerUrl}')`;
-        document.getElementById('mobile-logo').style.backgroundImage = `url('${logoUrl}')`;
-        document.getElementById('mobile-banner').style.backgroundImage = `url('${bannerUrl}')`;
-        document.getElementById('team-name-display').textContent = TEAM_DATA.TEAM_NAME;
-        document.getElementById('team-desc-container').innerHTML = TEAM_DATA.TEAM_BESCHREIBUNG;
-        buildTeamList();
-    }
-
-    function scrollToTop() {
-        listContainer.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    listContainer.onscroll = function() {
-        document.getElementById('scroll-top-btn').style.display = 
-            this.scrollTop > 100 ? "block" : "none";
-    };
-
-    window.onload = init;
-</script>
 </body>
 </html>
