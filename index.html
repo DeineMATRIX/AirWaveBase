@@ -1,1 +1,237 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>AirWaveBase</title><link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png"><link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png"><script src="team-data.js"></script><style>:root{--kick-green:#53fc18;--kick-green-hover:#45d614;--bg-page:#000000;--bg-frame:#2b2b2e;--menu-bg:#1f1f23;--text-main:#efeff1;--text-muted:#adadb8;--hover-bg:#3a3a3f}*{margin:0;padding:0;box-sizing:border-box;border:none!important;outline:0!important}body{font-family:Inter,sans-serif;background:var(--bg-page) url(hintergrund.jpg) center/cover fixed;color:var(--text-main);user-select:none}#main-wrapper{width:990px;margin:30px auto;background-color:var(--bg-frame);padding:15px;border-radius:2px;display:flex;gap:15px;box-shadow:0 0 30px rgba(0,0,0,.9);position:relative}.column-left{width:305px;display:flex;flex-direction:column;gap:15px;margin-left:-15px}#team-logo{width:305px;height:305px;background-size:contain;background-position:center;background-repeat:no-repeat;border-radius:2px;background-color:#000}.section-title{font-size:15px;font-weight:700;margin-bottom:10px;padding:0 5px;display:flex;justify-content:space-between}#team-list-wrapper{position:relative;background:var(--menu-bg);border-radius:2px;max-height:490px;overflow:hidden;flex:1;display:flex;flex-direction:column}#team-list{flex:1;overflow-y:auto;padding-bottom:30px}#team-list::-webkit-scrollbar{width:6px}#team-list::-webkit-scrollbar-thumb{background:#555;border-radius:3px}#team-list::-webkit-scrollbar-track{background:#1f1f23}.member-btn{display:flex;align-items:center;justify-content:space-between;padding:2px 10px;background:0 0;color:var(--text-main);cursor:pointer;width:100%;font-size:16px;transition:.1s;height:50px}.member-left{display:flex;align-items:center;flex:1}.avatar{width:35px;height:35px;border-radius:50%;margin-right:10px;object-fit:cover;background:#222}.viewer-count{color:var(--text-main);font-size:15px;min-width:20px;text-align:right}.viewer-count.live::before{content:"● ";color:var(--kick-green)}.member-btn:hover{background-color:var(--hover-bg)}.member-btn.active{background-color:var(--kick-green)!important;color:#000!important;font-weight:400}.member-btn.active .viewer-count,.member-btn.active .viewer-count.live::before{color:#000!important}#scroll-top-btn{position:absolute;bottom:0;left:0;right:0;display:none;padding:8px;background:#1a1a1e;color:var(--text-main);font-size:11px;text-align:center;cursor:pointer;border-top:1px solid #333}.column-right{width:640px;display:flex;flex-direction:column;gap:12px}#team-banner{width:640px;height:150px;background-size:cover;background-position:center;border-radius:2px;background-color:#000}.player-wrapper{width:100%;aspect-ratio:16/9;background:#000;border-radius:2px;overflow:hidden}iframe{width:100%;height:100%;border:none}.about-btn{background:var(--menu-bg);color:var(--kick-green);padding:11px 15px;border-radius:2px;text-align:center;font-weight:600;cursor:pointer}.about-btn:hover{background:#2a2a2f;color:var(--kick-green-hover)}.info-panel{background:var(--menu-bg);padding:15px;border-radius:2px}.info-panel a{color:var(--kick-green)!important;text-decoration:none}.info-panel a:hover{text-decoration:underline}#copyright{position:absolute;bottom:1px;right:16px;font-size:11px;color:var(--text-muted);opacity:.8}@media (max-width:950px){#main-wrapper{flex-direction:column;width:95%;max-width:100%;margin:15px auto;padding:15px}.mobile-top{display:flex;gap:10px;margin-bottom:6px;width:100%}#mobile-logo{width:75px;height:75px;background-size:contain;border-radius:2px;flex-shrink:0}#mobile-banner{flex:1;height:75px;background-size:cover;background-position:center;border-radius:2px}.column-left>#team-logo,.column-right>#team-banner{display:none}.column-left{margin-left:0;width:100%}.column-right{width:100%!important}#team-list{max-height:250px}}</style></head><body oncontextmenu="return false;"><div id="main-wrapper"><div class="mobile-top"><div id="mobile-logo"></div><div id="mobile-banner"></div></div><div class="column-left"><div id="team-logo"></div><aside style="flex:1;display:flex;flex-direction:column"><div class="section-title"><span>Team Members</span> <span id="member-count">0</span></div><div id="team-list-wrapper"><div id="team-list"></div><button id="scroll-top-btn" onclick="scrollToTop()">Back to top</button></div></aside></div><div class="column-right"><div id="team-banner"></div><div class="player-wrapper"><iframe id="main-player"></iframe></div><div id="about-btn" class="about-btn" onclick="openAboutPage()">About <span id="current-member-name">TeamMember</span></div><div class="info-panel"><h2 id="team-name-display"></h2><p id="team-desc-container"></p></div></div><div id="copyright">© <span id="year"></span> DeineMATRIX</div></div><script src="main-obfuscated.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>AirWaveBase</title>
+    
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+   
+    <script src="team-data.js"></script>
+  
+    <style>
+        /* Dein gesamter CSS-Block hier (genau wie vorher) */
+        :root {
+            --kick-green: #53fc18;
+            --kick-green-hover: #45d614;
+            --bg-page: #000000;
+            --bg-frame: #2b2b2e;
+            --menu-bg: #1f1f23;
+            --text-main: #efeff1;
+            --text-muted: #adadb8;
+            --hover-bg: #3a3a3f;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; border: none !important; outline: none !important; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-page) url('hintergrund.jpg') center/cover fixed;
+            color: var(--text-main);
+            user-select: none;
+        }
+        #main-wrapper {
+            width: 990px;
+            margin: 30px auto;
+            background-color: var(--bg-frame);
+            padding: 15px;
+            border-radius: 2px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            position: relative;
+        }
+        .column-left {
+            width: 305px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-left: -15px;
+        }
+        #team-logo {
+            width: 305px;
+            height: 305px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            border-radius: 2px;
+            background-color: #000;
+        }
+        .section-title { font-size: 15px; font-weight: 700; margin-bottom: 10px; padding: 0 5px; display: flex; justify-content: space-between; }
+        #team-list-wrapper {
+            position: relative;
+            background: var(--menu-bg);
+            border-radius: 2px;
+            max-height: 490px;
+            overflow: hidden;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        #team-list {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 30px;
+        }
+        #team-list::-webkit-scrollbar { width: 6px; }
+        #team-list::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
+        #team-list::-webkit-scrollbar-track { background: #1f1f23; }
+        .member-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2px 10px;
+            background: transparent;
+            color: var(--text-main);
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            transition: 0.1s;
+            height: 50px;
+        }
+        .member-left { display: flex; align-items: center; flex: 1; }
+        .avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+            background: #222;
+        }
+        .viewer-count {
+            color: var(--text-main);
+            font-size: 15px;
+            min-width: 20px;
+            text-align: right;
+        }
+        .viewer-count.live::before {
+            content: "● ";
+            color: var(--kick-green);
+        }
+        .member-btn:hover { background-color: var(--hover-bg); }
+        .member-btn.active { background-color: var(--kick-green) !important; color: #000 !important; font-weight: normal; }
+        .member-btn.active .viewer-count,
+        .member-btn.active .viewer-count.live::before {
+            color: #000 !important;
+        }
+        #scroll-top-btn {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            display: none; padding: 8px; background: #1a1a1e;
+            color: var(--text-main); font-size: 11px; text-align: center;
+            cursor: pointer; border-top: 1px solid #333;
+        }
+        .column-right { width: 640px; display: flex; flex-direction: column; gap: 12px; }
+        #team-banner { width: 640px; height: 150px; background-size: cover; background-position: center; border-radius: 2px; background-color: #000; }
+        .player-wrapper { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: 2px; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; }
+        .about-btn {
+            background: var(--menu-bg);
+            color: var(--kick-green);
+            padding: 11px 15px;
+            border-radius: 2px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .about-btn:hover { background: #2a2a2f; color: var(--kick-green-hover); }
+        .info-panel { background: var(--menu-bg); padding: 15px; border-radius: 2px; }
+        .info-panel a {
+            color: var(--kick-green) !important;
+            text-decoration: none;
+        }
+        .info-panel a:hover {
+            text-decoration: underline;
+        }
+        #copyright {
+            position: absolute;
+            bottom: 1px;
+            right: 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+            opacity: 0.8;
+        }
+        @media (max-width: 950px) {
+            #main-wrapper {
+                flex-direction: column;
+                width: 95%;
+                max-width: 100%;
+                margin: 15px auto;
+                padding: 15px;
+            }
+            .mobile-top {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 6px;
+                width: 100%;
+            }
+            #mobile-logo {
+                width: 75px;
+                height: 75px;
+                background-size: contain;
+                border-radius: 2px;
+                flex-shrink: 0;
+            }
+            #mobile-banner {
+                flex: 1;
+                height: 75px;
+                background-size: cover;
+                background-position: center;
+                border-radius: 2px;
+            }
+            .column-left > #team-logo,
+            .column-right > #team-banner {
+                display: none;
+            }
+            .column-left {
+                margin-left: 0;
+                width: 100%;
+            }
+            .column-right {
+                width: 100% !important;
+            }
+            #team-list {
+                max-height: 250px;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+<div id="main-wrapper">
+    <!-- Dein gesamter HTML-Inhalt bleibt gleich -->
+    <div class="mobile-top">
+        <div id="mobile-logo"></div>
+        <div id="mobile-banner"></div>
+    </div>
+    <div class="column-left">
+        <div id="team-logo"></div>
+        <aside style="flex:1;display:flex;flex-direction:column;">
+            <div class="section-title">
+                <span>Team Members</span>
+                <span id="member-count">0</span>
+            </div>
+            <div id="team-list-wrapper">
+                <div id="team-list"></div>
+                <button id="scroll-top-btn" onclick="scrollToTop()">Back to top</button>
+            </div>
+        </aside>
+    </div>
+    <div class="column-right">
+        <div id="team-banner"></div>
+        <div class="player-wrapper">
+            <iframe id="main-player"></iframe>
+        </div>
+        <div id="about-btn" class="about-btn" onclick="openAboutPage()">
+            About <span id="current-member-name">TeamMember</span>
+        </div>
+        <div class="info-panel">
+            <h2 id="team-name-display"></h2>
+            <p id="team-desc-container"></p>
+        </div>
+    </div>
+    <div id="copyright">© <span id="year"></span> DeineMATRIX</div>
+</div>
+
+<!-- Scripts am Ende des Bodys (wichtig!) -->
+<script src="main-obfuscated.js"></script>
+</body>
+</html>
