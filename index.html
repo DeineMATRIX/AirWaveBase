@@ -6,15 +6,13 @@
     <meta name="referrer" content="no-referrer">
     <title>AirWaveBase</title>
     
-    <!-- Icons -->
     <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
     <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
    
-    <!-- Scripts -->
     <script src="team-data.js"></script>
-    <script src="main-obfuscated.js"></script>
   
     <style>
+        /* Dein gesamter CSS-Block hier (genau wie vorher) */
         :root {
             --kick-green: #53fc18;
             --kick-green-hover: #45d614;
@@ -199,6 +197,7 @@
 </head>
 <body oncontextmenu="return false;">
 <div id="main-wrapper">
+    <!-- Dein gesamter HTML-Inhalt bleibt gleich -->
     <div class="mobile-top">
         <div id="mobile-logo"></div>
         <div id="mobile-banner"></div>
@@ -221,7 +220,6 @@
         <div class="player-wrapper">
             <iframe id="main-player"></iframe>
         </div>
-     
         <div id="about-btn" class="about-btn" onclick="openAboutPage()">
             About <span id="current-member-name">TeamMember</span>
         </div>
@@ -232,5 +230,8 @@
     </div>
     <div id="copyright">© <span id="year"></span> DeineMATRIX</div>
 </div>
+
+<!-- Scripts am Ende des Bodys (wichtig!) -->
+<script src="main-obfuscated.js"></script>
 </body>
 </html>
